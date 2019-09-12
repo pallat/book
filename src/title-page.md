@@ -2,45 +2,30 @@
 
 *by Steve Klabnik and Carol Nichols, with contributions from the Rust Community*
 
-This version of the text assumes you’re using Rust 1.31.0 or later with
-`edition="2018"` in *Cargo.toml* of all projects to use Rust 2018 Edition
-idioms. See the [“Installation” section of Chapter 1][install]<!-- ignore -->
-to install or update Rust, and see the new [Appendix E][editions]<!-- ignore
---> for information on editions.
+เนื้อหาของเอกสารเวอร์ชั่นนี้จัดทำโดยสมมุติฐานว่าผู้อ่านกำลังใช้ Rust เวอร์ชั่น 1.31.0 หรือใหม่กว่า โดยสามารถดูได้จากค่า `edition="2018"` ในไฟล์ *Cargo.toml* ซึ่งบอกว่ากำลังใช้สำนวนของ Rust ฉบับปี 2018 ในทุกโปรเจ็ค ดูเพิ่มเติมได้ที่ [“Installation” section of Chapter 1][install]<!-- ignore --> เพื่อติดตั้งหรืออัพเกรด Rust และ ภาคผนวกฉบับใหม่ที่ [Appendix E][editions]<!-- ignore
+--> สำหรับข้อมูลเพิ่มเติม
 
-The 2018 Edition of the Rust language includes a number of improvements that
-make Rust more ergonomic and easier to learn. This iteration of the book
-contains a number of changes to reflect those improvements:
+ภาษา Rust ฉบับปี 2018 มีการแก้ไขเพิ่มเติมให้เหมาะกับการทำงาน และเรียนรู้ได้ง่ายขึ้นกว่าก่อน จึงได้จัดทำเอกสารนี้ขึ้นมาใหม่เพื่อสะท้อนให้เห็นถึงการเปลี่ยนแปลงที่เกิดขึ้น:
 
-- Chapter 7, “Managing Growing Projects with Packages, Crates, and Modules,”
-  has been mostly rewritten. The module system and the way paths work in the
-  2018 Edition were made more consistent.
-- Chapter 10 has new sections titled “Traits as Parameters” and “Returning
-  Types that Implement Traits” that explain the new `impl Trait` syntax.
-- Chapter 11 has a new section titled “Using `Result<T, E>` in Tests” that
-  shows how to write tests that use the `?` operator.
-- The “Advanced Lifetimes” section in Chapter 19 was removed because compiler
-  improvements have made the constructs in that section even rarer.
-- The previous Appendix D, “Macros,” has been expanded to include procedural
-  macros and was moved to the “Macros” section in Chapter 19.
-- Appendix A, “Keywords,” also explains the new raw identifiers feature that
-  enables code written in the 2015 Edition and the 2018 Edition to interoperate.
-- Appendix D is now titled “Useful Development Tools” and covers recently
-  released tools that help you write Rust code.
-- We fixed a number of small errors and imprecise wording throughout the book.
-  Thank you to the readers who reported them!
+- บนที่ 7 "การบริหารจัดการโปรเจ็คที่ใหญ่ขึ้นด้วย Packages, Crates และ Modules"
+  ในส่วนนี้ถูกเขียนขึ้นมาใหม่เกือบทั้งหมด การจัดการโมดูล และแนวทางการทำงานในฉบับ 2018 จะมีความสอดคล้องกันมากขึ้น
+- บทที่ 10 เพิ่มหัวข้อใหม่เรื่อง "Traits as Parameters" และ "Returning
+  Types that Implement Traits" เพื่ออธิบาย syntax ใหม่ `impl Traits`
+- บทที่ 11 เพิ่มหัวข้อใหม่เรื่อง "Using `Result<T, E>` in Tests" แสดงให้เห็นว่าจะเขียนเทสอย่างไร และการใช้โอเปอเรเตอร์ `?`
+- หัวข้อ "Advanced Lifetimes" ในบทที่ 19 ถูกนำออกไปเพราะการปรับปรุงคอมไพเลอร์ทำให้โครงสร้างในส่วนนั้นเกิดได้ยาก
+- ในภาคผนวก D เรื่อง "Macros," ก่อนหน้านี้ได้ถูกขยายความไปรวมกับ procedural macros และถูกย้ายไปเป็นหัวข้อชื่อ "Macros" ในบทที่ 19
+- ภาคผนวก A เรื่อง "Keywords" ยังได้อธิบายถึงวิธีการใหม่ที่จะช่วยให้สามารถใช้โค้ดฉบับปี 2015 ร่วมกับโค้ดฉบับปี 2018 ได้
+- ภาคผนวก D เพิ่มหัวข้อ "Useful Development Tools" ครอบคลุมไปถึง tools ที่เพิ่งออกมาล่าสุดในการช่วยเขียนโค้ด Rust
+- เราได้แก้ไข error เล็กๆน้อยๆอีกจำนวนหนึ่ง รวมถึงแก้ไขคำผิดตลอดทั้งเล่ม
+  ขอบคุณผู้อ่านทั้งหลายที่ช่วยกันรายงานเข้ามา
 
-Note that any code in earlier iterations of *The Rust Programming Language*
-that compiled will continue to compile without `edition="2018"` in the
-project’s *Cargo.toml*, even as you update the Rust compiler version you’re
-using. That’s Rust’s backward compatibility guarantees at work!
+สังเกตว่า โค้ดที่เห็นใน *The Rust Programming Language* ฉบับก่อนหน้านี้จะยังสามารถคอมไพล์ได้โดยไม่มี `edition="2018"` ในไฟล์ *Cargo.toml* แม้ว่าคุณจะได้อัพเดท Rust คอมไพเลอร์แล้ว นั่นแปลว่าเรื่องที่ Rust รับประกันการเข้ากันได้ย้อนหลัง มันใช้ได้
 
-The HTML format is available online at
+หนังสือฉบับออนไลน์ พร้อมใช้งานได้ที่
 [https://doc.rust-lang.org/stable/book/](https://doc.rust-lang.org/stable/book/)
-and offline with installations of Rust made with `rustup`; run `rustup docs
---book` to open.
+ส่วนฉบับออฟไลน์ที่มากับตัวติดตั้ง Rust ด้วย rustup; เปิดอ่านได้ด้วยการรันคำสั่ง `rustup docs --book`
 
-This text is available in [paperback and ebook format from No Starch
+ต้นฉบับนี้อยู่ที่ [paperback and ebook format from No Starch
 Press][nsprust].
 
 [install]: ch01-01-installation.html
