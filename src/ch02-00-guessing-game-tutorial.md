@@ -135,30 +135,18 @@ let mut bar = 5; // mutable
 > สังเกต: สัญลักษณ์ `//` เป็นการคอมเม้นต์โค้ดหลังสัญลักษณ์นี้ไปจนถึงจบบรรทัด
 > Rust จะไม่สนใจของที่อยู่ในคอมเม้นต์ โดยเราจะมาถกประเด็นนี้ต่อกันในรายละเอียดในบทที่ 3
 
-Let’s return to the guessing game program. You now know that `let mut guess`
-will introduce a mutable variable named `guess`. On the other side of the equal
-sign (`=`) is the value that `guess` is bound to, which is the result of
-calling `String::new`, a function that returns a new instance of a `String`.
-[`String`][string]<!-- ignore --> is a string type provided by the standard
-library that is a growable, UTF-8 encoded bit of text.
+ตอนนี้เรากลับมาที่โปรแกรมเกมของเรากันดีกว่า จากที่ได้บอกไปแล้วว่า `let mut guess` จะสร้างตัวแปร `guess` ที่สามารถเปลี่ยนค่าได้ โดยกำหนดค่าด้วยเครื่องหมายเท่ากับ (`=`) เป็นค่าที่ได้จากการเรียกฟังก์ชั่น `String::new` ที่จะคืน `String` มาให้ตัวหนึ่ง [`String`][string]<!-- ignore --> เป็น type ที่มาพร้อมไลบรารี่มาตรฐานเข้ารหัสแบบ UTF-8
 
 [string]: ../std/string/struct.String.html
 
-The `::` syntax in the `::new` line indicates that `new` is an *associated
-function* of the `String` type. An associated function is implemented on a type,
-in this case `String`, rather than on a particular instance of a `String`. Some
-languages call this a *static method*.
+สัญลักษณ์ `::` ใน `::new` บอกให้รู้ว่า `new` เป็น *associated
+function* ของ `String` และ associated function สร้างไว้บน type ซึ่งในกรณีนี้คือ `String` ในบางภาษาจะเรียกสิ่งนี้ว่า *static method*
 
-This `new` function creates a new, empty string. You’ll find a `new` function
-on many types, because it’s a common name for a function that makes a new value
-of some kind.
+ฟังกํชั่น `new` จะสร้างสติงเปล่าๆขึ้นมาตัวหนึ่ง โดยปกติคุณจะเห็นว่าทุก type จะมีฟังก์ชั่น `new` มาด้วยเสมอ เพราะมันเป็นชื่อกลางๆ ที่เรามักจะใช้สร้างค่าอะไรใหม่ๆอยู่แล้ว
 
-To summarize, the `let mut guess = String::new();` line has created a mutable
-variable that is currently bound to a new, empty instance of a `String`. Whew!
+สรุปว่าบรรทัดของ `let mut guess = String::new();` เป็นการสร้างตัวแปรที่เปลี่ยนแปลงค่าได้ และผูกไว้กับ instance ของ `String` เฮ้อ!
 
-Recall that we included the input/output functionality from the standard
-library with `use std::io;` on the first line of the program. Now we’ll call
-the `stdin` function from the `io` module:
+ย้อนกลับไปตรงที่เราขอใช้ input/output จากไลบรารี่มาตรฐานด้วยการบอก `use std:io` ในบรรทักแรกของโปรแกรม ทีนี้เราจะเรียกใช้ฟังก์ชั่น `stdin` จากโมดูล `io`:
 
 ```rust,ignore
 io::stdin().read_line(&mut guess)
