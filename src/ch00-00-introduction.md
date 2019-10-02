@@ -1,108 +1,95 @@
 # Introduction
 
-> Note: This edition of the book is the same as [The Rust Programming
-> Language][nsprust] available in print and ebook format from [No Starch
-> Press][nsp].
+> สังเกต: หนังสือฉบับนี้เหมือนกันกับ [The Rust Programming
+> Language][nsprust] โดยหาซื้อได้ทั้งรูปแบบพิมพ์และ ebook ได้จาก [No Starch
+> Press][nsp]
 
 [nsprust]: https://nostarch.com/rust
 [nsp]: https://nostarch.com/
 
-Welcome to *The Rust Programming Language*, an introductory book about Rust.
-The Rust programming language helps you write faster, more reliable software.
-High-level ergonomics and low-level control are often at odds in programming
-language design; Rust challenges that conflict. Through balancing powerful
-technical capacity and a great developer experience, Rust gives you the option
-to control low-level details (such as memory usage) without all the hassle
-traditionally associated with such control.
+ยินดีต้อนรับสู่ *The Rust Programming Language* หนังสือเกี่ยวกับภาษา Rust เบื้องต้น
+The Rust programming language จะช่วยให้คุณทำซอท์ฟแวร์ได้เร็วและดีขึ้นกว่าเดิม
+บ่อยครั้งที่เราจะพบว่าการเขียนโปรแกรมระดับสูงกับระดับล่าง จะมีประเด็นเกี่ยวกับการออกแบบตัวภาษา
+แต่ Rust จะท้าทายประเด็นนี้ ด้วยการสร้างความสมดุลทางด้านเทคนิคของทั้งสองฝั่ง และเสนอตัวเลือก
+ให้คุณควบคุมในรายละเอียดเชิงลึก(เช่นการใช้หน่วยความจำ) ที่ไม่ยุ่งยากแบบที่เคยเจอมา
 
-## Who Rust Is For
+## Rust เหมาะกับใครบ้าง
 
-Rust is ideal for many people for a variety of reasons. Let’s look at a few of
-the most important groups.
+Rust เหมาะสมอย่างยิ่งกับหลายๆผู้คน ด้วยหลายๆเหตุและผล เราลองมาดูสักสองสามกลุ่มสำคัญๆกัน
 
-### Teams of Developers
+### ทีมนักพัฒนาซอฟท์แวร์
 
-Rust is proving to be a productive tool for collaborating among large teams of
-developers with varying levels of systems programming knowledge. Low-level code
-is prone to a variety of subtle bugs, which in most other languages can be
-caught only through extensive testing and careful code review by experienced
-developers. In Rust, the compiler plays a gatekeeper role by refusing to
-compile code with these elusive bugs, including concurrency bugs. By working
-alongside the compiler, the team can spend their time focusing on the program’s
-logic rather than chasing down bugs.
+Rust พิสูจน์ให้เห็นว่าเป็นเครื่องมือที่มีประสิทธิภาพในการทำงานกับทีมใหญ่ๆ ที่มีระดับความรู้หลากหลาย
+ในเรื่องการเขียนโปรแกรมระบบ ซึ่งปกติโค้ดระบบเชิงลึกมีแนวโน้มที่จะเกิดบั๊กเยอะแยะ ซึ่งถ้าเป็นภาษาอื่นๆ
+คุณจะต้องเขียนเทสกันไว้ และให้คนมีประสบการณ์มาตรวจทานด้วยความรอบคอบก่อนเสมอ
+แต่ใน Rust จะมีตัวคอมไพเลอร์ที่ทำหน้าที่เป็น รปภ โดยจะไม่ยอมคอมไพล์โค้ดที่อาจจะก่อนให้เกิดบั๊กได้
+รวมไปถึงบั๊กของการทำงานแบบ concurrency ด้วย และด้วยเหตุนี้ ทีมจะได้ไม่ต้องมาพะวงเรื่องนี้
+แล้วเอาเวลาไปทำ logic ให้ดีแทน
 
-Rust also brings contemporary developer tools to the systems programming world:
+Rust ยังจะมีเครื่องมีที่ทันสมัยมาช่วยให้ชีวิตโปรแกรมเมอร์ง่ายขึ้นอีก:
 
-* Cargo, the included dependency manager and build tool, makes adding,
-  compiling, and managing dependencies painless and consistent across the Rust
-  ecosystem.
-* Rustfmt ensures a consistent coding style across developers.
-* The Rust Language Server powers Integrated Development Environment (IDE)
-  integration for code completion and inline error messages.
+* Cargo, ที่มีตัวจัดการ dependency และ build tool โดยมันจะช่วยในเรื่องการเพิ่ม lib
+  การคอมไพล์ และจัดการความเข้ากันของระบบนิเวศ ของ Rust
+* Rustfmt มาช่วยให้โค้ดของนักพัฒนาแต่ละคน หน้าตาเหมือนกัน
+* Rust Language Server จะทำงานร่วมกับ IDE เช่น ช่วยเติมโค้ด แจ้ง error
 
-By using these and other tools in the Rust ecosystem, developers can be
-productive while writing systems-level code.
+ด้วยการใช้ tools เหล่านี้ในระบบนิเวศของ Rust จะทำให้นักพัฒนามีทำงานได้อย่างมีประสิทธิภาพ
+มากขึ้น
 
-### Students
+### นักเรียน
 
-Rust is for students and those who are interested in learning about systems
-concepts. Using Rust, many people have learned about topics like operating
-systems development. The community is very welcoming and happy to answer
-student questions. Through efforts such as this book, the Rust teams want to
-make systems concepts more accessible to more people, especially those new to
-programming.
+Rust เหมาะกับนักเรียนที่มีความสนใจเกี่ยวกับ แนวคิดของระบบ ซึ่งการใช้ Rust จะทำให้ผู้คนได้เรียนรู้
+เกี่ยวกับหัวข้อเรื่องการพัฒนา OS และชุมชนนักพัฒนาของเรา ยินดีเป็นอย่างมากที่จะช่วยตอบคำถามจาก
+นักเรียน ด้วยความพยายามแบบเดียวกับหนังสือเล่มนี้ ทีมงาน Rust ต้องการสร้างแนวคิด ให้ใครๆก็สามารถ
+เข้าถึงได้ โดยเฉพาะอย่างยิ่ง นักเขียนโปรแกรมหน้าใหม่ทั้งหลาย
 
-### Companies
+### บริษัทต่างๆ
 
-Hundreds of companies, large and small, use Rust in production for a variety of
-tasks. Those tasks include command line tools, web services, DevOps tooling,
-embedded devices, audio and video analysis and transcoding, cryptocurrencies,
-bioinformatics, search engines, Internet of Things applications, machine
-learning, and even major parts of the Firefox web browser.
+มีบริษัทจำนวนมาก ทั้งเล็กใหญ่ ที่ใช้ Rust บน production ในหลายๆรูปแบบ มีทั้งแบบทำเป็น command line,
+web services, เครื่องมือสำหรับ DevOps, ใส่ลงไปในอุปกรณ์ต่างๆ, การแปลงและวิเคราะห์ภาพและเสียง,
+cryptocurrencies, bioinformatics, search engines, Internet of Things applications, machine
+learning, และส่วนหลักๆใน Firefox web browser
 
-### Open Source Developers
+### นักพัฒนา Open Source
 
-Rust is for people who want to build the Rust programming language, community,
-developer tools, and libraries. We’d love to have you contribute to the Rust
-language.
+Rust เหมาะกับคนที่ต้องการมาช่วยกันสร้าง ภาษา Rust, ร่วมกับชุมชนของเรา, สร้างเครื่องมือสำหรับนักพัฒนา,
+และ libraries ต่างๆ เรายินดีที่คุณจะมาช่วยกันเป็นส่วนหนึ่งของภาษา Rust
 
-### People Who Value Speed and Stability
+### คนที่ให้ความสำคัญกับความเร็วและเสถียรภาพ
 
-Rust is for people who crave speed and stability in a language. By speed, we
-mean the speed of the programs that you can create with Rust and the speed at
-which Rust lets you write them. The Rust compiler’s checks ensure stability
-through feature additions and refactoring. This is in contrast to the brittle
-legacy code in languages without these checks, which developers are often
-afraid to modify. By striving for zero-cost abstractions, higher-level features
-that compile to lower-level code as fast as code written manually, Rust
-endeavors to make safe code be fast code as well.
+Rust เหมาะสำหรับคนที่กระหายความเร็วและความเสถียรของตัวภาษา โดยทางด้านความเร็ว
+เราหมายถึงความเร็วในการเขียนโปรแกรมด้วยภาษา Rust และวิธีที่ Rust นำเสนอให้คุณเขียนมัน
+ตัวคอมไพเลอร์ของ Rust จะตรวจสอบความเสถียรอยู่เสมอ ไม่ว่าคุณจะเพิ่มฟีเจอร์หรือ refactor ก็ตาม
+ซึ่งตรงข้ามกับโค้ดแบบเก่าๆที่เขียนด้วยภาษาที่ไม่มีการตรวจสอบแบบนี้ และบ่อยครั้งมันนทำให้นักพัฒนาไม่
+กล้าที่จะแก้ไขอะไรเลย ด้วยความพยายามอย่างหนักของ zero-cost abstractions ทำให้ฟีเจอร์
+ในระดับบน ถูกคอมไพล์สู่โค้ดระดับล่างด้วยความเร็วสูงเหมือนไม่มี abstractions อยู่เลย นี่คือสิ่งที่
+Rust พยายามทำ เพื่อให้โค้ดมีความปลอดภัยและเร็วที่สุดเท่าที่จะทำได้
 
-The Rust language hopes to support many other users as well; those mentioned
-here are merely some of the biggest stakeholders. Overall, Rust’s greatest
-ambition is to eliminate the trade-offs that programmers have accepted for
-decades by providing safety *and* productivity, speed *and* ergonomics. Give
-Rust a try and see if its choices work for you.
+ภาษา Rust หวังว่าจะสนับสนุนกลุ่มอื่นๆเช่นกัน ที่เรากล่าวถึงนี้เป็นเพียงส่วนหนึ่ง และ Rust มีความ
+มุ่งมั่นที่จะทะลายกรอบความคิดที่ว่า โปรแกรมเมอร์จะต้องเลือกระหว่าง ความปลอดภัยและประสิทธิภาพ,
+ความเร็วกับการออกแบบที่ดี ให้โอกาส Rust ให้ทดลองให้คุณเห็นเผื่อว่านี่คือสิ่งที่คุณกำลังตามหา
 
-## Who This Book Is For
+## หนังสือเล่มนี้เหมาะกับใคร
 
-This book assumes that you’ve written code in another programming language but
-doesn’t make any assumptions about which one. We’ve tried to make the material
-broadly accessible to those from a wide variety of programming backgrounds. We
-don’t spend a lot of time talking about what programming *is* or how to think
-about it. If you’re entirely new to programming, you would be better served by
-reading a book that specifically provides an introduction to programming.
+หนังสือเล่มนี้คาดว่าคุณได้เคยเขียนโปรแกรมด้วยภาษาอื่นมาบ้างแต่ไม่ได้เจาะจงว่าจะเป็นภาษาใด
+เราพยายามทำเนื้อหาให้กว้างพอสำหรับคนที่มีพื้นเพจากภาษาใดก็ได้ และเราคงจะไม่เสียเวลาไปกับการ
+บอกว่า การเขียนโปรแกรมต้องทำอย่างไร หรือคิดอย่างไร ซึ่งถ้าคุณเป็นมือใหม่ มันจะดีกับตัวคุณเองถ้า
+คุณเริ่มหาอ่านหนังสือที่เกี่ยวกับการเขียนโปรแกรมเบื้องต้นก่อน
 
-## How to Use This Book
+## จะใช้หนังสือนี้อย่างไร
 
-In general, this book assumes that you’re reading it in sequence from front to
-back. Later chapters build on concepts in earlier chapters, and earlier
-chapters might not delve into details on a topic; we typically revisit the
-topic in a later chapter.
+โดยปกติ หนังสือเล่มนี้จะหวังให้คุณอ่านตั้งแต่ด้านหน้าไปจนถึงด้านท้าย เพราะบทท้ายๆจะอ้างอิงจาก
+บทก่อนหน้า และบทแรกๆจะไม่ค่อยลงรายละเอียดในหัวข้อต่างๆ เพราะเราจะทำมันในบทท้ายๆ
 
-You’ll find two kinds of chapters in this book: concept chapters and project
-chapters. In concept chapters, you’ll learn about an aspect of Rust. In project
-chapters, we’ll build small programs together, applying what you’ve learned so
-far. Chapters 2, 12, and 20 are project chapters; the rest are concept chapters.
+คุณจะพบเนื้อหา 2 แบบในหนังสือเล่มนี้ คือบทที่เกี่ยวกับแนวคิด และบทที่เป็นโปรเจ็ค โดยในบทที่กล่าวถึง
+เรื่องแนวคิด คุณจะได้เรียนรู้แง่มุมต่างๆของ Rust และในบทที่เป็นโปรเจ็ค คุณจะได้ทดลองสร้างโปรเจ็ค
+เล็กๆไปด้วยกันกับเรา ด้วยการประยุกต์ใช้สิ่งที่ได้เรียนรู้มา โดยบทที่ 2, 12 และ 20 จะเป็นบทที่เราจะ
+ทำโปรเจ็คด้วยกัน และบทที่เหลือจะเป็นเรื่องแนวคิด
+
+บทที่ 1 จะอธิบายวิธีการติดตั้ง Rust วิธีเขียนโปรแกรม Hello, world! และการใช้ Cargo รวมไป
+ถึงการใช้ package manager และเครื่องมือสำหรับ build โปรแกรม
+บทที่ 2 จะเป็นกิจกรรมเบื้องต้นให้รู้จักภาษา Rust โดยจะครอบคลุมแนวคิดเรื่อง high level และจะ
+ไปอธิบายรายละเอียดเพิ่มเติมในบทท้ายๆ ซึ่งถ้าคุณคันไม้คันมือแล้วตอนนี้ก็ไปเริ่มที่บทที่ 2 ได้เลย
 
 Chapter 1 explains how to install Rust, how to write a Hello, world! program,
 and how to use Cargo, Rust’s package manager and build tool. Chapter 2 is a
