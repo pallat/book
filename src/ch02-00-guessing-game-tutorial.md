@@ -153,77 +153,46 @@ io::stdin().read_line(&mut guess)
     .expect("Failed to read line");
 ```
 
-If we hadn’t listed the `use std::io` line at the beginning of the program, we
-could have written this function call as `std::io::stdin`. The `stdin` function
-returns an instance of [`std::io::Stdin`][iostdin]<!-- ignore -->, which is a
-type that represents a handle to the standard input for your terminal.
+แต่ถ้าเรายังไม่ได้ใส่ `use std::io` ไว้ที่บรรทัดแรกๆของโปรแกรม เราสามารถเขียนแบบนี้แทนได้  `std::io::stdin` โดยฟังก์ชั่น `stdin` จะคืน instance ของ [`std::io::Stdin`][iostdin]<!-- ignore --> ซึ่งเป็น type ที่จะจัดการเกี่ยวกับมาตรฐานการรับค่าจากเทอมินัลนั่นเอง
 
 [iostdin]: ../std/io/struct.Stdin.html
 
-The next part of the code, `.read_line(&mut guess)`, calls the
-[`read_line`][read_line]<!-- ignore --> method on the standard input handle to
-get input from the user. We’re also passing one argument to `read_line`: `&mut
-guess`.
+โค้ดในส่วนต่อมาคือ `.read_line(&mut guess)` การเรียกเมธอด [`read_line`][read_line]<!-- ignore --> เป็นการรอรับค่าจากผู้เล่น เราจึงเอาตัวแปร `&mut guess` ไปใส่ไว้ใน `read_line`
 
 [read_line]: ../std/io/struct.Stdin.html#method.read_line
 
-The job of `read_line` is to take whatever the user types into standard input
-and place that into a string, so it takes that string as an argument. The
-string argument needs to be mutable so the method can change the string’s
-content by adding the user input.
+งานของ `read_line` คือการรับค่าอะไรก็ตามที่ผู้เล่นจะใส่เข้ามาเป็นสตริง เข้ามาเป็นอาร์กิวเมนต์ โดยเจ้าอาร์กิวเมนต์นี้จะต้องเป็นแบบที่เปลี่ยนค่าได้ เพื่อให้เมธอดเปลี่ยนค่าในนั้นเป็นค่าที่ผู้เล่นส่งเข้ามา
 
-The `&` indicates that this argument is a *reference*, which gives you a way to
-let multiple parts of your code access one piece of data without needing to
-copy that data into memory multiple times. References are a complex feature,
-and one of Rust’s major advantages is how safe and easy it is to use
-references. You don’t need to know a lot of those details to finish this
-program. For now, all you need to know is that like variables, references are
-immutable by default. Hence, you need to write `&mut guess` rather than
-`&guess` to make it mutable. (Chapter 4 will explain references more
-thoroughly.)
+เครื่องหมาย `&` บอกให้รู้ว่าอาร์กิวเมนต์นั้นเป็นแบบ *reference* เป็นการเปิดช่องให้โค้ดจากหลายๆส่วน เป็นค่าเดิียวกันจากหน่วยความจำ โดยไม่ต้องสำเนาค่านั้นหลายๆครั้งในหน่วยความจำ ซึ่งเจ้า References นี่แหล่ะ เป็นส่วนหลักใน Rust ที่ซับซ้อนมากส่วนหนึ่ง เพราะมันจะต้องใช้ได้ง่ายและปลอดภัยด้วย แต่คุณไม่ต้องรู้รายละเอียดเกี่ยวกับมันมากนักหรอก ตอนนี้สิ่งที่คุณต้องสนใจคือตัวแปรที่เป็น references จะเป็นตัวแปรที่แก้ไขค่าไม่ได้เป็นค่าตั้งต้น และด้วยเหตุนี้ คุณจึงต้องเขียน `&mut guess` แทนที่จะเขียนว่า `&guess` เพื่อทำให้มันแก้ไขค่าได้นั่นเอง (เดี๋ยวเราจะมาอธิบายเรื่อง references กันอีกทีในบทที่ 4)
 
 ### Handling Potential Failure with the `Result` Type
 
-We’re not quite done with this line of code. Although what we’ve discussed so
-far is a single line of text, it’s only the first part of the single logical
-line of code. The second part is this method:
+เรายังไม่จบกับบรรทัดนี้ แม้ว่าเราจะคุยกันในแต่ละบรรทัดกันจริงจังมากแล้ว เราเพิ่งจะเล่าไปแค่ส่วนเดียวของบรรทัดนี้เอง และส่วนที่สองของมันคือเมธอดนี้:
 
 ```rust,ignore
 .expect("Failed to read line");
 ```
 
-When you call a method with the `.foo()` syntax, it’s often wise to introduce a
-newline and other whitespace to help break up long lines. We could have
-written this code as:
+ตอนที่เราเรียกเมธอด `.foo()` แบบนี้ มันฉลาดพอที่จะขึ้นบรรทัดใหม่ให้พร้อมกับเว้นวรรคเพื่อไม่ให้ยาวเกินไปแบบนี้:
 
 ```rust,ignore
 io::stdin().read_line(&mut guess).expect("Failed to read line");
 ```
 
-However, one long line is difficult to read, so it’s best to divide it: two
-lines for two method calls. Now let’s discuss what this line does.
+ด้วยเหตุว่าถ้าบรรทัดไหนมันยาว จะทำให้อ่านยาก ซึ่งมันจะดีกว่าถ้าแบ่งเป็นสองบรรทัดซะ เอาละ ทีนี้เรามาดูต่อกันดีกว่าว่าบรรทัดนี้มันทำอะไร
 
-As mentioned earlier, `read_line` puts what the user types into the string
-we’re passing it, but it also returns a value—in this case, an
-[`io::Result`][ioresult]<!-- ignore -->. Rust has a number of types named
-`Result` in its standard library: a generic [`Result`][result]<!-- ignore -->
-as well as specific versions for submodules, such as `io::Result`.
+จากที่เราได้บอกไปก่อนหน้านี้แล้วว่า `read_line` จะส่งสิ่งที่ผู้เล่นพิมพ์เข้ามาเป็นสตริง ในขณะเดียวกันมันก็จะคืนค่ากลับมาให้ด้วย ซึ่งในที่นี้มันคือ [`io::Result`][ioresult]<!-- ignore --> โดยที่ Rust เองก็มี type ที่ชื่อว่า `Result` อยู่พอสมควรในไลบรารี่มาตรฐาน: [`Result`][result]<!-- ignore --> ที่เป็น generic จะเหมือนกันกับตัวที่แทรกตามโมดูลต่างๆ เช่นใน `io::Result`
 
 [ioresult]: ../std/io/type.Result.html
 [result]: ../std/result/enum.Result.html
 
-The `Result` types are [*enumerations*][enums]<!-- ignore -->, often referred
-to as *enums*. An enumeration is a type that can have a fixed set of values,
-and those values are called the enum’s *variants*. Chapter 6 will cover enums
-in more detail.
+type `Result` นั้นเป็น [*enumerations*][enums]<!-- ignore --> ซึ่งบ่อยครั้งเราจะเห็นในชื่อ *enums* โดยเจ้า enumeration นี้เป็น type ที่สามารถเก็บเซ็ตของค่าคงที่ได้ และค่าพวกนั้นจะถูกเรียกว่า *variants* ของ enum โดยในบทที่ 6 จะมีรายละเอียดเกี่ยวกับ enum อีกที
 
 [enums]: ch06-00-enums.html
 
-For `Result`, the variants are `Ok` or `Err`. The `Ok` variant indicates the
-operation was successful, and inside `Ok` is the successfully generated value.
-The `Err` variant means the operation failed, and `Err` contains information
-about how or why the operation failed.
+สำหรับ `Result` จะมีค่า variants คือ `Ok` หรือ `Err` โดยถ้าเป็น `Ok` จะหมายความว่าการทำงานนั้นสำเร็จ และในนั้นจะมีค่าต่างๆที่บอกว่าทำสำเร็จอย่างไร ส่วน `Err` จะหมายถึงว่า การทำงานนั้นล้มเหลว และจะมีรายละเอียดถึงสาเหตุว่าทำไมถึงล้มเหลวมาให้ด้วย
 
+ประโยชน์ของ `Result` คือการดักจับข้อมูลที่ error 
 The purpose of these `Result` types is to encode error-handling information.
 Values of the `Result` type, like values of any type, have methods defined on
 them. An instance of `io::Result` has an [`expect` method][expect]<!-- ignore
