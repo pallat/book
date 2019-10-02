@@ -136,19 +136,13 @@ $ cargo check
 ### Building for Release
 
 เมื่อโปรเจ็คของคุณพร้อมจะปล่อยให้ใช้จริง คุณสามารถใช้คำสั่ง `cargo build
---release` เพื่อคอมไพล์แบบรีดประสิทธิภาพสูงสุด โดยคำสั่งนี้จะสร้างไฟล์ executable ไว้ที่ *target/release* แทนที่จะไว้ใน *target/debug* ซึ่งการรีดประสิทธิภาพนี้จะช่วยให้โปรแกรมทำงานเร็วยิ่งขึ้น แต่อาจจะใช้เวลาคอมไพล์นานหน่อย นั่นเป็นสาเหตุว่าทำไมเราถึงจะต้องมีโปรไฟล์สองแบบที่ต่างกัน แบบแรกใช้สำหรับพัฒนา ที่ต้องการการบิวด์เร็วๆ บ่อยๆ ส่วนอีกแบบใช้สำหรับโปรแกรมที่เสร็จแล้ว พร้อมส่งให้ใช้งานจริง ซึ่งมันไม่ต้องการการคอมไพล์บ่อย แต่ต้องการให้ทำงานได้เร็วที่สุดเท่าที่จะทำได้ ทีนี้ถ้าคุณจะทดสอบการทำงานในแง่ประสิทธิภาพ อย่าลืมว่าคุณจะต้องรันด้วยคำสั่ง `cargo build --release` และเอาตัว executable ใน *target/release* ไปทำการทดสอบ
+--release` เพื่อคอมไพล์แบบรีดประสิทธิภาพสูงสุด โดยคำสั่งนี้จะสร้างไฟล์ executable ไว้ที่ *target/release* แทนที่จะไว้ใน *target/debug* ซึ่งการรีดประสิทธิภาพนี้จะช่วยให้โปรแกรมทำงานเร็วยิ่งขึ้น แต่อาจจะใช้เวลาคอมไพล์นานหน่อย นั่นเป็นสาเหตุว่าทำไมเราถึงจะต้องมีโปรไฟล์สองแบบที่ต่างกัน แบบแรกใช้สำหรับพัฒนา ที่ต้องการการบิวด์เร็วๆ บ่อยๆ ส่วนอีกแบบใช้สำหรับโปรแกรมที่เสร็จแล้ว พร้อมส่งให้ใช้งานจริง ซึ่งมันไม่ต้องการการคอมไพล์บ่อย แต่ต้องการให้ทำงานได้เร็วที่สุดเท่าที่จะทำได้ ทีนี้ถ้าคุณจะทดสอบการทำงานในแง่ประสิทธิภาพ อย่าลืมว่าคุณจะต้องรันด้วยคำสั่ง `cargo build --release` และเอาตัว executable ใน *target/release* ไปทำการทดสอบนะ
 
 ### Cargo as Convention
 
-With simple projects, Cargo doesn’t provide a lot of value over just using
-`rustc`, but it will prove its worth as your programs become more intricate.
-With complex projects composed of multiple crates, it’s much easier to let
-Cargo coordinate the build.
+กับโปรเจ็คง่าย คุณจะไม่ค่อยเห็นประโยชน์ของ Cargo มากนัก แค่ใช้ `rustc` ก็เพียงพอแล้ว แต่ถ้าโปรแกรมที่เขียนเริ่มมีความสลับซับซ้อนขึ้น ใช้ crates มากขึ้น Cargo จะแสดงศักยภาพให้เห็นว่ามันช่วยให้ชีวิตคุณง่ายขึ้นแค่ไหน
 
-Even though the `hello_cargo` project is simple, it now uses much of the real
-tooling you’ll use in the rest of your Rust career. In fact, to work on any
-existing projects, you can use the following commands to check out the code
-using Git, change to that project’s directory, and build:
+แต่ถึงแม้ว่าโปรเจ็ค `hello_cargo` ของเรามันจะดูง่ายมาก แต่เราก็ได้ลองใช้เครื่องมือจริงๆที่คุณจะได้ใช้ทำมาหากินได้ตลอด และความจริง เวลาทำงานกับโปรเจ็คเก่าๆ คุณสามารถใช้คำสั่งนี้ดึงโค้ดลงมาแล้วก็ลองบิวด์มันตามนี้ได้เลย:
 
 ```text
 $ git clone someurl.com/someproject
@@ -156,24 +150,20 @@ $ cd someproject
 $ cargo build
 ```
 
-For more information about Cargo, check out [its documentation].
+สำหรับข้อมูลเพิ่มเติมเกี่ยวกับ Cargo ให้ตามไปดูในเอกสารได้ที่ [its documentation]
 
 [its documentation]: https://doc.rust-lang.org/cargo/
 
-## Summary
+## สรุป
 
-You’re already off to a great start on your Rust journey! In this chapter,
-you’ve learned how to:
+ถึงตอนนี้คุณก็ได้จบการเริ่มต้นมหากาพย์อันยิ่งใหญ่แห่ง Rust เรียบร้อยแล้ว โดยในบทนี้คุณได้เรียนรู้ว่า:
 
-* Install the latest stable version of Rust using `rustup`
-* Update to a newer Rust version
-* Open locally installed documentation
-* Write and run a Hello, world! program using `rustc` directly
-* Create and run a new project using the conventions of Cargo
+* การติดตั้ง Rust เวอร์ชั่นที่เสถียรล่าสุดด้วย `rustup`
+* การอัพเดทเวอร์ Rust ชั่นใหม่
+* การเปิดเอกสารการติดตั้งบนเครื่องคุณเอง
+* เขียนและรันโปรแกรม Hello, world~ ด้วยการใช้ `rustc` ตรงๆ
+* เขียนและรันโปรเจ็คใหม่ด้วย Cargo
 
-This is a great time to build a more substantial program to get used to reading
-and writing Rust code. So, in Chapter 2, we’ll build a guessing game program.
-If you would rather start by learning how common programming concepts work in
-Rust, see Chapter 3 and then return to Chapter 2.
+และตอนนี้ก็น่าจะเป็นเวลาที่ดีที่สุดที่เราจะมาเขียนโปรแกรมกันจริงๆจังๆ โดยในบทที่ 2 เราจะมาสร้างเกมทายตัวเลขกัน แต่ถ้าคุณอยากจะเริ่มจากคอนเซ็ปท์ทั่วไปของ Rust ให้ไปอ่านบทที่ 3 ก่อนก็ได้ แล้วค่อยกลับมาอ่านบทที่ 2 อีกที
 
 [installation]: ch01-01-installation.html#installation
