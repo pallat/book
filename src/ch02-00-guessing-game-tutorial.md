@@ -192,22 +192,11 @@ type `Result` นั้นเป็น [*enumerations*][enums]<!-- ignore --> �
 
 สำหรับ `Result` จะมีค่า variants คือ `Ok` หรือ `Err` โดยถ้าเป็น `Ok` จะหมายความว่าการทำงานนั้นสำเร็จ และในนั้นจะมีค่าต่างๆที่บอกว่าทำสำเร็จอย่างไร ส่วน `Err` จะหมายถึงว่า การทำงานนั้นล้มเหลว และจะมีรายละเอียดถึงสาเหตุว่าทำไมถึงล้มเหลวมาให้ด้วย
 
-ประโยชน์ของ `Result` คือการดักจับข้อมูลที่ error 
-The purpose of these `Result` types is to encode error-handling information.
-Values of the `Result` type, like values of any type, have methods defined on
-them. An instance of `io::Result` has an [`expect` method][expect]<!-- ignore
---> that you can call. If this instance of `io::Result` is an `Err` value,
-`expect` will cause the program to crash and display the message that you
-passed as an argument to `expect`. If the `read_line` method returns an `Err`,
-it would likely be the result of an error coming from the underlying operating
-system. If this instance of `io::Result` is an `Ok` value, `expect` will take
-the return value that `Ok` is holding and return just that value to you so you
-can use it. In this case, that value is the number of bytes in what the user
-entered into standard input.
+ประโยชน์ของ `Result` คือการแปลข้อความจาก error คือว่า ค่าที่ได้จาก `Result` เนี่ย มันก็ไม่ต่างจากค่าที่ได้จาก type อื่นๆ คือมันมีเมธอดหลายตัวให้ใช้ เช่น อินสแตนซ์ของ `io::Result` จะมีเมธอด [`expect` method][expect]<!-- ignore --> ให้เรียกใช้ ซึ่งถ้าเจ้า อินสแตนซ์ของ `io::Result` เป็นค่า `Err` จะทำให้ `expect` พังและแสดงข้อความที่เราส่งเป็นอาร์กิวเมนต์ให้ `expect` ออกมา กลับมาที่ `read_line` ถ้ามันคืน `Err` เราก็จะได้ผลลัพธ์ที่เป็น error กลับมา แต่ถ้าอินสแตนซ์ของ `io::Result` ได้เป็นค่า `Ok` แทน `expect` ก็จะรับเอาผลลัพธ์กลับมาให้เรานำไปใช้ต่อได้ โดยในตัวอย่างนี้ ค่าที่ได้กลับมาก็คือจำนวนไบต์ที่ผู้เล่นพิมพ์เข้ามา
 
 [expect]: ../std/result/enum.Result.html#method.expect
 
-If you don’t call `expect`, the program will compile, but you’ll get a warning:
+ถ้าคุณไม่เรียก `expect` คุณก็สามารถคอมไพล์โปรแกรมได้นะ แต่คุณจะได้รับคำเตือนแบบนี้:
 
 ```text
 $ cargo build
@@ -221,28 +210,19 @@ warning: unused `std::result::Result` which must be used
    = note: #[warn(unused_must_use)] on by default
 ```
 
-Rust warns that you haven’t used the `Result` value returned from `read_line`,
-indicating that the program hasn’t handled a possible error.
+Rust เตือนให้คุณรู้ว่า คุณไม่ได้รับคือ `Result` กลับมาจาก `read_line` ซึ่งหมายความว่าโปรแกรมของคุณจะไม่รู้เมื่อเกิด error ขึ้นด้วย
 
-The right way to suppress the warning is to actually write error handling, but
-because you just want to crash this program when a problem occurs, you can use
-`expect`. You’ll learn about recovering from errors in Chapter 9.
+ความจริงคือคุณต้องเชื่อคำเตือนแล้วจัดการรับ error มาแก้ไขสถานการณ์ซะ แต่เพราะว่าคุณแค่อยากจะให้โปรแกรมมันพังเมื่อเกิดปัญหา คุณก็แค่ใช้ `expect` ซึ่งคุณจะได้เรียนรู้เกี่ยวกับการ กู้สถานการณ์จาก error ได้ในบทที่ 9
 
 ### Printing Values with `println!` Placeholders
 
-Aside from the closing curly brackets, there’s only one more line to discuss in
-the code added so far, which is the following:
+ก่อนนจะถึงวงเล็บปิด ยังเหลืออีกหนึ่งบรรทัดที่เราจะกล่าวถึง:
 
 ```rust,ignore
 println!("You guessed: {}", guess);
 ```
 
-This line prints the string we saved the user’s input in. The set of curly
-brackets, `{}`, is a placeholder: think of `{}` as little crab pincers that
-hold a value in place. You can print more than one value using curly brackets:
-the first set of curly brackets holds the first value listed after the format
-string, the second set holds the second value, and so on. Printing multiple
-values in one call to `println!` would look like this:
+บรรทัดนี้จะพิมพ์สตริงว่าเราได้บันทึกสิ่งที่ผู้เล่นใส่เข้ามาเรียบร้อยแล้ว โดยชุดของวงเล็บก้ามปูเปิดปิด `{}` คือตัวแทนของค่าตัวแปรด้านหลัง ให้คิดซะว่ามันเหมือนก้ามปูที่เอาไว้หนีบค่าเอาไว้ โดยคุณจะพิมพ์มันออกไปกี่ค่าก็ได้ด้วยการใช้เครื่องหมายนี้: โดยก้ามปูแรกจะแทนด้วยค่าแรกหลังฟอร์แมตนี้ ก้ามปูที่สองก็แทนด้วยค่าที่สองและสามต่อไปเรื่อยๆถ้ามี โดยการพิมพ์ค่าออกไปหลายๆค่าด้วย `println!` จะทำลักษณะนี้:
 
 ```rust
 let x = 5;
@@ -251,11 +231,11 @@ let y = 10;
 println!("x = {} and y = {}", x, y);
 ```
 
-This code would print `x = 5 and y = 10`.
+โค้ดนี้จะพิมพ์ข้อความว่า `x = 5 and y = 10`.
 
 ### Testing the First Part
 
-Let’s test the first part of the guessing game. Run it using `cargo run`:
+ถึงเวลาทดสอบโปรแกรมด้วยการรันคำสั่ง `cargo run`:
 
 ```text
 $ cargo run
@@ -268,31 +248,19 @@ Please input your guess.
 You guessed: 6
 ```
 
-At this point, the first part of the game is done: we’re getting input from the
-keyboard and then printing it.
+ถึงจุดนี้ ขั้นตอนแรกของโปรแกรมเราก็สำเร็จ: เราสามารถรับค่าจากคีย์บอร์ดแล้วพิมพ์มันออกมาดูได้แล้ว
 
 ## Generating a Secret Number
 
-Next, we need to generate a secret number that the user will try to guess. The
-secret number should be different every time so the game is fun to play more
-than once. Let’s use a random number between 1 and 100 so the game isn’t too
-difficult. Rust doesn’t yet include random number functionality in its standard
-library. However, the Rust team does provide a [`rand` crate][randcrate].
+ต่อไป เรามาสร้างตัวเลขลับที่จะให้ผู้เล่นเดากัน ด้วยการทำให้มันไม่ซ้ำกันในแต่ละครั้งที่เล่น เพื่อความสนุก ด้วการสุ่มตัวเลขระหว่าง 1 ถึง 100 เกมส์จะได้ไม่ยากมากเกินไป เนื่องด้วยการสุ่มตัวเลขมันไม่ได้ถูกรวมมากับไลบรารี่พื้นฐาน Rust แต่ทีม Rust ก็ทำไว้ให้ที่ [`rand` crate][randcrate]
 
 [randcrate]: https://crates.io/crates/rand
 
 ### Using a Crate to Get More Functionality
 
-Remember that a crate is a collection of Rust source code files.
-The project we’ve been building is a *binary crate*, which is an executable.
-The `rand` crate is a *library crate*, which contains code intended to be
-used in other programs.
+ถ้ายังจำได้ crate คือชุดรวบรวมไฟล์ซอสโค้ดของ Rust เช่นโปรเจ็คที่เราทำกันนี่จะเรียกว่า *binary crate* หมายถึงโปรแกรมที่ถูกเรียกใช้ได้ทันที ส่วน crate ของ `rand` เป็น *library crate* หมายถึงโค้ดที่สามารถถูกเรียกใช้จากโปรแกรมอื่นได้
 
-Cargo’s use of external crates is where it really shines. Before we can write
-code that uses `rand`, we need to modify the *Cargo.toml* file to include the
-`rand` crate as a dependency. Open that file now and add the following line to
-the bottom beneath the `[dependencies]` section header that Cargo created for
-you:
+การใช้ Cargo กับ crate จากภายนอกจะต้องเป็นที่รู้จักจริงๆ และก่อนที่จะใช้ `rand` ได้ เราต้องแก้ไขไฟล์ *Cargo.toml* เสียก่อน ด้วยการเพิ่ม crate `rand` เข้าไปใน dependency ทำได้ง่ายๆด้วยการเปิดไฟล์มาเพิ่มหนึ่งบรรทัดภายใต้ส่วน `[dependencies]` แบบนี้:
 
 <span class="filename">Filename: Cargo.toml</span>
 
@@ -302,20 +270,11 @@ you:
 rand = "0.3.14"
 ```
 
-In the *Cargo.toml* file, everything that follows a header is part of a section
-that continues until another section starts. The `[dependencies]` section is
-where you tell Cargo which external crates your project depends on and which
-versions of those crates you require. In this case, we’ll specify the `rand`
-crate with the semantic version specifier `0.3.14`. Cargo understands [Semantic
-Versioning][semver]<!-- ignore --> (sometimes called *SemVer*), which is a
-standard for writing version numbers. The number `0.3.14` is actually shorthand
-for `^0.3.14`, which means “any version that has a public API compatible with
-version 0.3.14.”
+ในไฟล์ *Cargo.toml* ทุกๆอย่างจะอยู่ภายใต้หัวข้อของแต่ละส่วนไปเรื่อยๆจนกว่าจะถึงหัวข้อใหม่ และในหัวข้อ `[dependencies]` เป็นส่วนที่เอาไว้ให้คุณบอก Cargo ว่าโปรเจ็คคุณต้องการเรียกใช้ crate อะไรบ้าง และเวอร์ชั่นอะไร ด้วยการบอกเป็น semantic version แบบเจาะจงไปเลยเช่น `0.3.14` ซึ่ง Cargo จะเข้าใจ [Semantic Versioning][semver]<!-- ignore --> อยู่แล้ว (บางครั้งจะเรียกย่อๆว่า *SemVer*) เป็นมาตรฐาน และสามารถใช้รูปย่อแบบนี้ `^0.3.14` เพื่อบอกว่า “สามารถใช้เวอร์ชั่นไหนก็ได้ที่สอดคล้องกับเวอร์เช่น 0.3.14”
 
 [semver]: http://semver.org
 
-Now, without changing any of the code, let’s build the project, as shown in
-Listing 2-2.
+ตอนนี้ โดยไม่ต้องแก้ไขโค้ดเราลองมาบิวด์โปรเจ็คกันตามที่แสดงให้เห็นใน Listing 2-2
 
 ```text
 $ cargo build
@@ -331,31 +290,17 @@ $ cargo build
 <span class="caption">Listing 2-2: The output from running `cargo build` after
 adding the rand crate as a dependency</span>
 
-You may see different version numbers (but they will all be compatible with
-the code, thanks to SemVer!), and the lines may be in a different order.
+คุณอาจจะเห็นเวอร์ชั่นที่ไม่ตรงกันก็ได้ (แต่มันจะสอดคล้องกับสิ่งที่โค้ดเรียกใช้ได้, ขอบคุณ SemVer!) และอาจจะสลับบรรทัดกันก็ไม่ผิด
 
-Now that we have an external dependency, Cargo fetches the latest versions of
-everything from the *registry*, which is a copy of data from
-[Crates.io][cratesio]. Crates.io is where people in the Rust ecosystem post
-their open source Rust projects for others to use.
+ตอนนี้เรามี dependency จากภายนอกใช้ละ Cargo จะไปดึงเวอร์ชั่นล่าสุดของสุดๆอย่างจาก *registry*  ที่สำเนาข้อมูลมาจาก [Crates.io][cratesio] อีกที โดย Crates.io เป็นที่ ที่ผู้คนที่ใช้ Rust นำเอาโค้ดมาแบ่งปันให้คนอื่นๆได้ใช้กัน
 
 [cratesio]: https://crates.io/
 
-After updating the registry, Cargo checks the `[dependencies]` section and
-downloads any crates you don’t have yet. In this case, although we only listed
-`rand` as a dependency, Cargo also grabbed a copy of `libc`, because `rand`
-depends on `libc` to work. After downloading the crates, Rust compiles them and
-then compiles the project with the dependencies available.
+หลังจากที่ได้ปรับปรุง registry กันไปแล้ว Cargo จะตรวจสอบในส่วน `[dependencies]` และดาวน์โหลด crate ที่คุณยังไม่เคยมีมาก่อนลงมา ซึ่งในกรณีนี้เรามีแค่ `rand` ตัวเดียวโดย Cargo จะไปหยิบ `libc` มาด้วย เพราะว่า `rand` อ้างอิงไปใช้ `libc` อีกทีเพื่อทำงาน หลังจากดาวน์โหลดมาเสร็จแล้ว Rust จะคอมไพล์มันและจากนั้นค่อยคอมไพล์โปรเจ็ค
 
-If you immediately run `cargo build` again without making any changes, you
-won’t get any output aside from the `Finished` line. Cargo knows it has already
-downloaded and compiled the dependencies, and you haven’t changed anything
-about them in your *Cargo.toml* file. Cargo also knows that you haven’t changed
-anything about your code, so it doesn’t recompile that either. With nothing to
-do, it simply exits.
+ถ้าคุณลองรัน `cargo build` ดูอีกทีโดยไม่ได้แก้ไขอะไรเลย คุณจะไม่เห็นข้อความ `Finished` แล้ว เพราะ Cargo รู้ว่าได้ดาวน์โหลดและคอมไพล์ dependency แล้ว และคุณไม่ได้แก้ไขอะไรในไฟล์ *Cargo.toml* แต่อย่างใด มันจึงไม่ต้องคอมไพล์ซ้ำ
 
-If you open up the *src/main.rs* file, make a trivial change, and then save it
-and build again, you’ll only see two lines of output:
+ถ้าคุณเปิดไฟล์ *src/main.rs* ขึ้นมาแล้วแก้อะไรซักนิดดู พอบันทึกไฟล์แล้วบิวด์ซ้ำ คุณจะเห็นสองบรรทัดนี้ออกมา:
 
 ```text
 $ cargo build
@@ -363,41 +308,19 @@ $ cargo build
     Finished dev [unoptimized + debuginfo] target(s) in 2.53 secs
 ```
 
-These lines show Cargo only updates the build with your tiny change to the
-*src/main.rs* file. Your dependencies haven’t changed, so Cargo knows it can
-reuse what it has already downloaded and compiled for those. It just rebuilds
-your part of the code.
+สองบรรทัดนี้แสดงให้เห็นว่า Cargo ปรับปรุงเฉพาะส่วนที่คุณแก้ไขเล็กน้อยในไฟล์ *src/main.rs* โดยคุณไม่ได้แก้ไข dependencies อะไรเลย Cargo รู้ว่ามันสามารถใช้ของที่มีอยู่แล้วได้เลย มันจึงแค่บิวด์ซ้ำเฉพาะโค้ดของคุณเพียงอย่างเดียว
 
 #### Ensuring Reproducible Builds with the *Cargo.lock* File
 
-Cargo has a mechanism that ensures you can rebuild the same artifact every time
-you or anyone else builds your code: Cargo will use only the versions of the
-dependencies you specified until you indicate otherwise. For example, what
-happens if next week version 0.3.15 of the `rand` crate comes out and
-contains an important bug fix but also contains a regression that will break
-your code?
+Cargo มีกลไกที่จะมันใจได้ว่าคุณจะได้ของที่เหมือนเดิมเสมอ ไม่ว่าคุณหรือใครก็ตาม มาบิวด์โค้ดของคุณ เพราะ Cargo จะใช้แต่เวอร์ชั่นของ dependencies ที่คุณระบุไว้จนกว่าคุณจะเปลี่ยนมัน ตัวอย่างเช่น จะเกิดอะไรขึ้นถ้าสัปดาห์หน้า crate `rand` มีเวอร์ชั่นใหม่ 0.3.15 ออกมา และมันได้แก้ไขบั๊กที่สำคัญมากๆแต่มันจะทำให้โค้ดคุณพัง
 
-The answer to this problem is the *Cargo.lock* file, which was created the
-first time you ran `cargo build` and is now in your *guessing_game* directory.
-When you build a project for the first time, Cargo figures out all the
-versions of the dependencies that fit the criteria and then writes them to
-the *Cargo.lock* file. When you build your project in the future, Cargo will
-see that the *Cargo.lock* file exists and use the versions specified there
-rather than doing all the work of figuring out versions again. This lets you
-have a reproducible build automatically. In other words, your project will
-remain at `0.3.14` until you explicitly upgrade, thanks to the *Cargo.lock*
-file.
+คำตอบของปัญหานี้คือไฟล์ *Cargo.lock* ที่ถูกสร้างไว้ตั้งแต่ตอนที่คุณรัน `cargo build` ที่อยู่ในไดเร็คทอรี่ *guessing_game* โดยเมื่อตอนที่คุณบิวด์โปรเจ็คครั้งแรก Cargo จะตรวจสอบเวอร์ชั่นของทุกๆ dependencies ให้ตรงกับเงื่อนไขและเขียนมันลงไปในไฟล์ *Cargo.lock* หลังจากนั้น ทุกครั้งที่คุณเบิวด์โปรเจ็ค Cargo จะไปดูเวอร์ชั่นใน *Cargo.lock* แทนที่จะไปตรวจสอบใหม่ทุกครั้ง สิ่งนี้จะทำให้คุณได้ของเหมือนเดิมโดยอัตโนมัติ หรือในอีกทางหนึ่ง มันจะคงใช้เวอร์ชั่น `0.3.14` ไปจนกว่าคุณจะจงใจอัพเกรดมันเอง ขอบคุณไฟล์ *Cargo.lock*
 
 #### Updating a Crate to Get a New Version
 
-When you *do* want to update a crate, Cargo provides another command, `update`,
-which will ignore the *Cargo.lock* file and figure out all the latest versions
-that fit your specifications in *Cargo.toml*. If that works, Cargo will write
-those versions to the *Cargo.lock* file.
+เมื่อใดที่คุณอยากที่จะอัพเดท crate (จริงๆ) Cargo ได้เตรียมคำสั่ง `update` ไว้ให้แล้ว โดยมันจะไม่สนใจไฟล์ *Cargo.lock* และไปตรวจสอบเวอร์ชั่นล่าสุดใหม่หมด ตามที่คุณระบุไว้ใน *Cargo.toml* และถ้ามันใช้แทนกันได้ Cargo จะเขียนเวอร์ชั่นนั้นลงไปในไฟล์ *Cargo.lock* ใหม่ให้
 
-But by default, Cargo will only look for versions greater than `0.3.0` and less
-than `0.4.0`. If the `rand` crate has released two new versions, `0.3.15` and
-`0.4.0`, you would see the following if you ran `cargo update`:
+แต่โดยปกติ Cargo จะมองหาเวอร์ชั่นที่มากกว่า `0.3.0` และน้อยกว่า `0.4.0` ถ้า `rand` เกิดมีสองเวอร์ชั่นนี้ขึ้นมาคือ `0.3.15` กับ `0.4.0` คุณจะเห็นแบบนี้ถ้าคุณรัน `cargo update`:
 
 ```text
 $ cargo update
@@ -405,11 +328,9 @@ $ cargo update
     Updating rand v0.3.14 -> v0.3.15
 ```
 
-At this point, you would also notice a change in your *Cargo.lock* file noting
-that the version of the `rand` crate you are now using is `0.3.15`.
+ตอนนี้คุณจะสังเกตว่าไฟล์ *Cargo.lock* จะเปลี่ยนเวอร์ชั่นของ `rand` ไปเป็น `0.3.15`
 
-If you wanted to use `rand` version `0.4.0` or any version in the `0.4.x`
-series, you’d have to update the *Cargo.toml* file to look like this instead:
+ถ้าคุณอยากใช้ `rand` เวอรชั่น `0.4.0` หรือเวอร์ชั่นประมาณ `0.4.x` คุณจะต้องอัพเดทในไฟล์ `Cargo.toml` แบบนี้แทน:
 
 ```toml
 [dependencies]
@@ -417,23 +338,16 @@ series, you’d have to update the *Cargo.toml* file to look like this instead:
 rand = "0.4.0"
 ```
 
-The next time you run `cargo build`, Cargo will update the registry of crates
-available and reevaluate your `rand` requirements according to the new version
-you have specified.
+ทีนี้ตอนที่คุณรัน `cargo build` ครั้งถัดไป Cargo จะอัพเดทการลงทะเบียน crate ตามที่คุณร้องขอใช้ `rand` ให้พร้อมใช้ทันที
 
-There’s a lot more to say about [Cargo][doccargo]<!-- ignore --> and [its
-ecosystem][doccratesio]<!-- ignore --> which we’ll discuss in Chapter 14, but
-for now, that’s all you need to know. Cargo makes it very easy to reuse
-libraries, so Rustaceans are able to write smaller projects that are assembled
-from a number of packages.
+ยังมีอีกเยอะเกี่ยวกับ [Cargo][doccargo]<!-- ignore --> และ [its ecosystem][doccratesio]<!-- ignore --> ที่เราจะคุยกันในบทที่ 14 แต่ตอนนี้รู้แค่นี้ก็เพียงพอให้คุณรู้แล้วว่า Cargo จะช่วยให้ชีวิตคุณง่ายในการใช้ไลบรารี่ นั่นทำให้ ผู้คลั่งใคล้ Rust สามารถเขียนโปรเจ็คได้เล็กลงโดยการประกอบร่างจากแพ็คเก็จจำนวนหนึ่งแทน
 
 [doccargo]: http://doc.crates.io
 [doccratesio]: http://doc.crates.io/crates-io.html
 
 ### Generating a Random Number
 
-Now that you’ve added the `rand` crate to *Cargo.toml*, let’s start using
-`rand`. The next step is to update *src/main.rs*, as shown in Listing 2-3.
+มาถึงตอนนี้ คุณได้เพิ่ม crate `rand` เข้าไปใน *Cargo.toml* เรียบร้อย เรามาเริ่มใช้ `rand` กัน โดยในขั้นตอนต่อไปเราจะมาแก้ไข *src/main.rs* ตามที่เห็นใน Listing 2-3
 
 <span class="filename">Filename: src/main.rs</span>
 
@@ -462,34 +376,19 @@ fn main() {
 <span class="caption">Listing 2-3: Adding code to generate a random
 number</span>
 
-First, we add a `use` line: `use rand::Rng`. The `Rng` trait defines
-methods that random number generators implement, and this trait must be in
-scope for us to use those methods. Chapter 10 will cover traits in detail.
+อย่างแรก เราเพิ่มบรรทัด `use` แบบนี้: `use rand::Rng` โดยที่ `Rng` กำหนด trait ให้ตัวสุ่มเลข และ trait นี้ต้องอยู่ในสโคปที่เราจะใช้งานมัน ซึ่งเราจะไปดูรายละเอียดเกี่ยวกับ trait ในบทที่ 10 อีกที
 
-Next, we’re adding two lines in the middle. The `rand::thread_rng` function
-will give us the particular random number generator that we’re going to use:
-one that is local to the current thread of execution and seeded by the
-operating system. Then we call the `gen_range` method on the random number
-generator. This method is defined by the `Rng` trait that we brought into
-scope with the `use rand::Rng` statement. The `gen_range` method takes two
-numbers as arguments and generates a random number between them. It’s inclusive
-on the lower bound but exclusive on the upper bound, so we need to specify `1`
-and `101` to request a number between 1 and 100.
+ต่อมา เราเพิ่มอีกสองบรรทัดตรงกลาง ที่มีฟังก์ชั่น `rand::thread_rng` ที่จะให้ตัวสุ่มตัวเลขที่เราเจาะจงจะใช้: สิ่งนี้จะช่วยให้ thread ของเราเรียกใช้ตัวสุ่มจาก OS ได้โดยตรง หลังจากนั้นเมื่อเราเรียกเมธอด `gen_range` บทตัวสุ่มตัวเลขอีกที เมธอดนี้ถูกกำหนดไว้ใน trait `Rng` ที่เราเอาเข้ามาจาก `use rand::Rng` โดย `gen_range` จะรับอาร์กิวเม้นต์สองค่าเพื่อสุ่มเลขระหว่างสองค่านี้ ซึ่งก็คือค่าที่รวมจากขอบล่าง แต่ไม่ถึงขอบบน ดังนั้นเราจึงใส่เลข `1` และ `101` ลงไป เพราะว่าเราต้องการเลขระหว่าง 1 และ 100 นั่นเอง
 
-> Note: You won’t just know which traits to use and which methods and functions
-> to call from a crate. Instructions for using a crate are in each crate’s
-> documentation. Another neat feature of Cargo is that you can run the `cargo
-> doc --open` command, which will build documentation provided by all of your
-> dependencies locally and open it in your browser. If you’re interested in
-> other functionality in the `rand` crate, for example, run `cargo doc --open`
-> and click `rand` in the sidebar on the left.
+> สังเกต: คุณไม่จำเป็นต้องรู้ว่า traits ไหนใช้เมธอดอะไร ฟังก์ชั่นอะไรได้บ้าง 
+> เพราะมันมีอยู่ในเอกสารของแต่ละ crate อยู่แล้ว โดยคุณสามารถใช้อีกความสามารถหนึ่งของ Cargo 
+> ด้วยการรันคำสั่ง `cargo doc --open` แล้วมันจะสร้างเอกสารตาม dependencies
+> ที่คุณใช้แล้วก็เปิดให้บนเว็บเบราวเซอร์ ตัวอย่างเช่นถ้าคุณสนใจฟังก์ชั่นอื่นๆใน crate `rand`
+> คุณก็รัน `cargo doc --open` แล้วก็คลิกที่ `rand` ในแถบด้านซ้ายมือได้เลย
 
-The second line that we added to the middle of the code prints the secret
-number. This is useful while we’re developing the program to be able to test
-it, but we’ll delete it from the final version. It’s not much of a game if the
-program prints the answer as soon as it starts!
+บรรทัดที่สองที่เราเพิ่มเข้าไปตรงกลางของโค้ดเพราะพิมพ์ตัวเลขลับ นี่มีประโยชน์มากในระหว่างที่เรากำลังเขียนโปรแกรม เราจะได้ทดสอบมันได้ แต่เราจะลบมันออกในตอนที่เขียนเสร็จ เพราะไม่งั้นมันก็ดูไม่ค่อยจะเป็นเกมเท่าไหร่นะ ถ้าโปรแกรมพิมพ์คำตอบตั้งแต่ต้นน่ะ!
 
-Try running the program a few times:
+ลองรันโปรแกรมสักสองสามครั้งดู:
 
 ```text
 $ cargo run
@@ -510,8 +409,7 @@ Please input your guess.
 You guessed: 5
 ```
 
-You should get different random numbers, and they should all be numbers between
-1 and 100. Great job!
+คุณควรจะต้องได้เลขที่แตกต่างกันในแต่ละครั้ง และต้องเป็นเลขที่อยู่ระหว่าง 1 และ 100 ด้วยนะ สุดยอดเลย!
 
 ## Comparing the Guess to the Secret Number
 
