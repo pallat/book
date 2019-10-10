@@ -413,6 +413,7 @@ You guessed: 5
 
 ## Comparing the Guess to the Secret Number
 
+ทีนี้เราก็ได้เลขที่ผู้เล่นใส่เข้ามา แล้วก็ตัวเลขสุ่ม มาแล้ว เราสามารถเอามันมาเทียบกันได้ละ ตามที่เห็นใน Listing 2-4 แต่เราจะยังไม่คอมไพล์มันตอนนี้ ขออธิบายก่อน
 Now that we have user input and a random number, we can compare them. That step
 is shown in Listing 2-4. Note that this code won’t compile quite yet, as we
 will explain.
@@ -441,44 +442,17 @@ fn main() {
 <span class="caption">Listing 2-4: Handling the possible return values of
 comparing two numbers</span>
 
-The first new bit here is another `use` statement, bringing a type called
-`std::cmp::Ordering` into scope from the standard library. Like `Result`,
-`Ordering` is another enum, but the variants for `Ordering` are `Less`,
-`Greater`, and `Equal`. These are the three outcomes that are possible when you
-compare two values.
+อย่างแรกมีของใหม่นิดหน่อยกับการใช้ `use` เพื่อนำเข้า type จากไลบรารี่มาตรฐาน ที่ชื่อ `std::cmp::Ordering` เข้ามาในสโคป ซึ่งมันจะคล้ายกับ `Result` ก่อนหน้านี้ `Ordering` เป็น enum อีกตัวนึง แต่ค่าที่อยู่ใน `Ordering` จะเป็น `Less` กับ `Greater` และ `Equal` แทน ซึ่งจะเป็นผลลัพธ์ที่เป็นไปได้เวลาที่เราเปรียบเทียบค่าสองค่า
 
-Then we add five new lines at the bottom that use the `Ordering` type. The
-`cmp` method compares two values and can be called on anything that can be
-compared. It takes a reference to whatever you want to compare with: here it’s
-comparing the `guess` to the `secret_number`. Then it returns a variant of the
-`Ordering` enum we brought into scope with the `use` statement. We use a
-[`match`][match]<!-- ignore --> expression to decide what to do next based on
-which variant of `Ordering` was returned from the call to `cmp` with the values
-in `guess` and `secret_number`.
+จากนั้นเราจะเพิ่มอีกห้าบรรทัดข้างล่างที่ใช้ type `Ordering` โดยใช้เมธอด `cmp` เปรียบเทียบค่าสองค่า ซึ่งใช้เปรียบเทียบค่าอะไรก็ได้ที่มันจะสามารถเทียบกันได้ โดยใส่ค่าที่อ้างถึงของที่คุณต้องการจะเทียบลงไป: ในกรณีนี้มันใช้เทียบ `guess` กับ `secret_number` จากนั้นมันจะคือค่า enum `Ordering` ที่เรานำเข้ามาโดย `use` แล้วเราก็จะใช้ [`match`][match]<!-- ignore --> เพื่อตัดสินใจว่าจะทำอะไรในแต่ละกรณี
 
 [match]: ch06-02-match.html
 
-A `match` expression is made up of *arms*. An arm consists of a *pattern* and
-the code that should be run if the value given to the beginning of the `match`
-expression fits that arm’s pattern. Rust takes the value given to `match` and
-looks through each arm’s pattern in turn. The `match` construct and patterns
-are powerful features in Rust that let you express a variety of situations your
-code might encounter and make sure that you handle them all. These features
-will be covered in detail in Chapter 6 and Chapter 18, respectively.
+คำ `match` มาพร้อมกับ *แขน* แต่ละ แขน จะประกอบไปด้วย *รูปแบบ* และโค้ดเริ่มต้นที่คำว่า `match` ว่าจะตรงกับรูปแบบของแขนไหน Rust จะเอาค่าที่ได้มาให้ `match` เพื่อดูว่าแขนไหนกลับมา การสร้าง `match` และรูปแบบการใช้ใน Rust นี้มันทรงพลังมากที่ยอมให้คุณจัดการสถานการณ์ที่มีทางเป็นไปได้หลากหลาย ให้คุณมั่นใจว่าจะจัดการมันได้หมดทุกกรณี และเราจะมีรายละเอียดเรื่องนี้ต่อในบทที่ 6 และ 18
 
-Let’s walk through an example of what would happen with the `match` expression
-used here. Say that the user has guessed 50 and the randomly generated secret
-number this time is 38. When the code compares 50 to 38, the `cmp` method will
-return `Ordering::Greater`, because 50 is greater than 38. The `match`
-expression gets the `Ordering::Greater` value and starts checking each arm’s
-pattern. It looks at the first arm’s pattern, `Ordering::Less`, and sees that
-the value `Ordering::Greater` does not match `Ordering::Less`, so it ignores
-the code in that arm and moves to the next arm. The next arm’s pattern,
-`Ordering::Greater`, *does* match `Ordering::Greater`! The associated code in
-that arm will execute and print `Too big!` to the screen. The `match`
-expression ends because it has no need to look at the last arm in this scenario.
+มาดูตัวอย่างของเราต่อกันว่าจะเกิดอะไรขึ้นเวลาใช้ `match` ยกตัวอย่างเช่น เมื่อผู้เล่นเดาเลข 50 เข้ามา ในขณะที่ตัวเลขคำตอบเป็น 38 เมื่อโค้ดเทียบค่าด้วย `cmp` มันจะคืนค่า `Ordering::Grater` เพราะว่า 50 มีค่ามากกว่า 38 จากนั้น `match` จะเอาค่า `Ordering::Greater` มาดูที่ขาแรก `Ordering::Less` และดูว่า `Ordering::Greater` ไม่ตรงกับ `Ordering::Less` มันก็เลยไม่สนใจแขนนี้แล้วย้ายไปแขนอื่นต่อ ทีนี้แขนต่อไปก็คือ `Ordering::Greater` ซึ่งมัน *ตรง* กันกับ `Ordering::Greater` ที่ได้มาพอดี มันก็จะทำงานตามแขนนี้แล้วพิพม์คำว่า `Too big!` ออกมาบนหน้าจอ จากนั้นก็จะจบการทำงานของ `match` เพราะมันไม่จำเป็นที่จะต้องไปดูแขนสุดท้ายแล้ว
 
-However, the code in Listing 2-4 won’t compile yet. Let’s try it:
+แต่ในโค้ด Listing 2-4 เรายังไม่ได้คอมไพล์นะ ลองทำแบบนี้ดู:
 
 ```text
 $ cargo build
@@ -496,20 +470,9 @@ error: aborting due to previous error
 Could not compile `guessing_game`.
 ```
 
-The core of the error states that there are *mismatched types*. Rust has a
-strong, static type system. However, it also has type inference. When we wrote
-`let mut guess = String::new()`, Rust was able to infer that `guess` should be
-a `String` and didn’t make us write the type. The `secret_number`, on the other
-hand, is a number type. A few number types can have a value between 1 and 100:
-`i32`, a 32-bit number; `u32`, an unsigned 32-bit number; `i64`, a 64-bit
-number; as well as others. Rust defaults to an `i32`, which is the type of
-`secret_number` unless you add type information elsewhere that would cause Rust
-to infer a different numerical type. The reason for the error is that Rust
-cannot compare a string and a number type.
+ใจความสำคัญของข้อผิดพลาดนี้ก็คือ *mismatched types* ซึ่ง Rust ใช้ระบบ strong static type แต่ก็มีความสามารถเดา type ได้ เวลาที่เราเขียนแบบนี้ `let mut guess = String::new()` Rust เดาได้ว่า `guess` ควรเป็น `String` และทำให้เราไม่ต้องเขียน type มันลงไป ส่วน `secret_number` ก็จะเป็น type number เนื่องจากมี type แบบ number สองสามตัวที่สามารถมีค่าระหว่าง 1 ถึง 100 ได้เช่น: `i32` เป็นเลข 32-bit หรือ `u32` เป็นเลขจำนวนบวก 32-bit หรือ `i64` เป็นเลข 64-bit แต่เบื้อต้น Rust จะกำหนด `i32` ให้ `secret_number` เว้นเสียแต่ว่าคุณจะเพิ่มข้อมูลให้มากกว่านี้หน่อย Rust อาจจะเดาเป็น type อื่นให้ แต่ว่าข้อผิดพลาดที่เราเจอนั้น มันหมายความว่าไม่สามารถเปรียบเทียบค่าที่เป็น string กับตัวเลขได้
 
-Ultimately, we want to convert the `String` the program reads as input into a
-real number type so we can compare it numerically to the secret number. We can
-do that by adding the following two lines to the `main` function body:
+สุดท้ายแล้วเราต้อง แปลงค่าที่เรารับมาเป็น `String` ไปเป็นตัวเลขจริงๆ ที่เราจะได้่เอาไปเปรียบเทียบกับคำตอบได้ เราทำสิ่งนี้ได้ด้วยการเพิ่มสองบรรทัดตามนี้ใน `main`
 
 <span class="filename">Filename: src/main.rs</span>
 
@@ -534,43 +497,18 @@ do that by adding the following two lines to the `main` function body:
 }
 ```
 
-The two new lines are:
+สองบรรทัดที่ว่าก็คือ:
 
 ```rust,ignore
 let guess: u32 = guess.trim().parse()
     .expect("Please type a number!");
 ```
 
-We create a variable named `guess`. But wait, doesn’t the program already have
-a variable named `guess`? It does, but Rust allows us to *shadow* the previous
-value of `guess` with a new one. This feature is often used in situations in
-which you want to convert a value from one type to another type. Shadowing lets
-us reuse the `guess` variable name rather than forcing us to create two unique
-variables, such as `guess_str` and `guess` for example. (Chapter 3 covers
-shadowing in more detail.)
+เราสร้างตัวแปรชื่อ `guess` ตัวหนึ่ง แต่เดี๋ยวก่อน โปรแกรมยอมให้มีตัวแปลชื่อซ่้ำกันได้ด้วยเหรอ? คำตอบคือได้ แต่ Rust จะยอมให้เราใช้มันแบบ *เงา* ของค่าก่อนหน้านี้ ได้เป็นตัวใหม่ ซึ่งฟีเจอร์นี้ถูกใช้บ่อยๆในกรณีที่คุณต้องการแปลงค่าจาก type หนึ่งไปเป็นอีก type หนึ่ง การสร้างเงา ทำให้เราสามารถใช้ตัวแปรชื่อ `guess` ได้เลย แทนที่จะไปสร้างตัวแปรชื่ออีกเช่น `guess_str` ในขณะที่ก็มี `guess` อีกตัว (ในบทที่ 3 จะมีรายละเอียดเรื่องการสร้างเงา)
 
-We bind `guess` to the expression `guess.trim().parse()`. The `guess` in the
-expression refers to the original `guess` that was a `String` with the input in
-it. The `trim` method on a `String` instance will eliminate any whitespace at
-the beginning and end. Although `u32` can contain only numerical characters,
-the user must press <span class="keystroke">enter</span> to satisfy
-`read_line`. When the user presses <span class="keystroke">enter</span>, a
-newline character is added to the string. For example, if the user types <span
-class="keystroke">5</span> and presses <span class="keystroke">enter</span>,
-`guess` looks like this: `5\n`. The `\n` represents “newline,” the result of
-pressing <span class="keystroke">enter</span>. The `trim` method eliminates
-`\n`, resulting in just `5`.
+เราผูก `guess` ไว้แบบนี้ `guess.trim().parse()` โดย `guess` ตัวนี้อ้างถึง `guess` ตัวแรกที่เป็น `String` โดยมันจะกำจัดพวก whitespace ที่อยู่หัวและท้ายข้อความออกไป ถึงแม้ว่า `u32` เก็บได้เฉพาะตัวเลขเท่านั้น แต่ตอนที่ผู้เล่นกดปุ่ม <span class="keystroke">enter</span> เพื่อส่งคำตอบให้ `read_line` ตอนที่ผู้เล่นกด <span class="keystroke">enter</span> จะมีตัวอักษรขึ้นบรรทัดใหม่เติมเข้ามาใน string ตัวอย่างเช่น ถ้าผู้เล่นพิมพ์ <span class="keystroke">5</span> แล้วกดปุ่ม <span class="keystroke">enter</span> เราจะได้ `5\n` เข้ามา โดยเจ้า `\n` ก็คือเครื่องหมายการ “ขึ้นบรรทัดใหม่” เราจึงใช้ `trim` เพื่อกำจัด `\n` ให้เหลือแค่ `5`
 
-The [`parse` method on strings][parse]<!-- ignore --> parses a string into some
-kind of number. Because this method can parse a variety of number types, we
-need to tell Rust the exact number type we want by using `let guess: u32`. The
-colon (`:`) after `guess` tells Rust we’ll annotate the variable’s type. Rust
-has a few built-in number types; the `u32` seen here is an unsigned, 32-bit
-integer. It’s a good default choice for a small positive number. You’ll learn
-about other number types in Chapter 3. Additionally, the `u32` annotation in
-this example program and the comparison with `secret_number` means that Rust
-will infer that `secret_number` should be a `u32` as well. So now the
-comparison will be between two values of the same type!
+เมธอด [`parse` method on strings][parse]<!-- ignore --> จะแปลง string ไปเป็นตัวเลข แต่เพราะว่าเมธอดนี้สามารถเปลี่ยนไปเป็นตัวเลขชนิดใดก็ได้หลากหลายมาก เราจึงจำเป็นต้องบอก Rust ให้ชัดเจนว่าเราต้องการได้ type อะไรด้วยการใส่ `let guess: u32` โดยเครื่องหมายโคลอน (`:`) หลัง `guess` เป็นการอธิบาย type ให้ตัวแปร โดยที่ Rust มี type ที่เป็นตัวเลขของตัวเองแค่สองสามชนิด โดย `u32` ที่เห็นนี้เป็นตัวเลขแบบจำนวนเต็มบวกขนาด 32-bit มันน่าจะเป็นตัวเลือกที่ดีสำหรับเลขจำนวนน้อยๆที่มีแต่ค่าบวก ซึ่งเดี๋ยวเราจะได้เรียนเกี่ยวกับ type ตัวเลขในบทที่ 3 และเพิ่มอีกนิดว่า `u32` ที่เราใส่เข้าไปในตัวอย่างนี้ เพื่อไปเทียบกับ `secret_number` ยังหมายถึงว่า Rust จะเดาค่า `secret_number` ให้เป็น `u32` ไปด้วยเลย ดังนั้นตอนนี้เราจะสามารถเทีบบค่าทั้งสองได้แล้วเพราะว่ามี type ตรงกัน
 
 [parse]: ../std/primitive.str.html#method.parse
 
