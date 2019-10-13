@@ -414,9 +414,6 @@ You guessed: 5
 ## Comparing the Guess to the Secret Number
 
 ทีนี้เราก็ได้เลขที่ผู้เล่นใส่เข้ามา แล้วก็ตัวเลขสุ่ม มาแล้ว เราสามารถเอามันมาเทียบกันได้ละ ตามที่เห็นใน Listing 2-4 แต่เราจะยังไม่คอมไพล์มันตอนนี้ ขออธิบายก่อน
-Now that we have user input and a random number, we can compare them. That step
-is shown in Listing 2-4. Note that this code won’t compile quite yet, as we
-will explain.
 
 <span class="filename">Filename: src/main.rs</span>
 
@@ -512,19 +509,9 @@ let guess: u32 = guess.trim().parse()
 
 [parse]: ../std/primitive.str.html#method.parse
 
-The call to `parse` could easily cause an error. If, for example, the string
-contained `A👍%`, there would be no way to convert that to a number. Because it
-might fail, the `parse` method returns a `Result` type, much as the `read_line`
-method does (discussed earlier in [“Handling Potential Failure with the
-`Result` Type”](#handling-potential-failure-with-the-result-type)<!-- ignore
--->). We’ll treat this `Result` the same way by using the `expect` method
-again. If `parse` returns an `Err` `Result` variant because it couldn’t create
-a number from the string, the `expect` call will crash the game and print the
-message we give it. If `parse` can successfully convert the string to a number,
-it will return the `Ok` variant of `Result`, and `expect` will return the
-number that we want from the `Ok` value.
+`parse` มันเกิด error ง่ายมาก เช่นถ้าไปเจอสตริงที่มี `A👍%` มันแต่นอนว่าไม่สามารถแปลงค่าไปเป็นตัวเลขได้ และมันจะทำให้เกิดความผิดพลาดขึ้นและ `parse` จะคืนค่า `Result` แบบเดียวกับที่ `read_line` ทำ (เดี๋ยวเราจะไปคุยเรื่องนี้กันต่อใน [“Handling Potential Failure with the `Result` Type”](#handling-potential-failure-with-the-result-type)<!-- ignore -->) แล้วเราก็จะจัดการกับ `Result` แบบเดียวกันด้วยการใช้ `expect` ถ้า `parse` คืน `Err` มาใน `Result` ด้วยเหตุว่ามันไม่สามารถเปลี่ยนตัวหนังสือเป็นตัวเลขได้ จะทำให้ `expect` เกมแคลช และแสดงข้อความที่เราให้มันไป แต่ถ้า `parse` แปลงค่าได้สำเร็จมันจะคืน `Result` ที่เป็น `Ok` มาให้ แล้ว `expect` ก็จะคืนตัวเลขที่ได้มาในค่า `Ok`
 
-Let’s run the program now!
+ลองรันโปรแกรมดูเลย!
 
 ```text
 $ cargo run
@@ -539,18 +526,13 @@ You guessed: 76
 Too big!
 ```
 
-Nice! Even though spaces were added before the guess, the program still figured
-out that the user guessed 76. Run the program a few times to verify the
-different behavior with different kinds of input: guess the number correctly,
-guess a number that is too high, and guess a number that is too low.
+เยี่ยม! ถึงแม่ว่าจะมีการเว้นวรรคหนึ่งก่อนจะใส่เลขเข้ามา โปรแกรมก็จะจับได้ค่า 76 แน่นอน ลองรันดูสักสองสามรอบ เพื่อตรวจสอบว่าได้พฤติกรรมที่แตกต่างกันในแต่ละครั้ง: เดาดูก, เดาเลขสูงเกินไป และเดาเลขต่ำเกินไป
 
-We have most of the game working now, but the user can make only one guess.
-Let’s change that by adding a loop!
+ตอนนี้เราได้เกมที่เล่นได้แล้ว แต่ผู้เล่นจะเดาได้แค่งครั้งเดียว เราจะมาแก้ให้มันวนลูปกันต่อ
 
 ## Allowing Multiple Guesses with Looping
 
-The `loop` keyword creates an infinite loop. We’ll add that now to give users
-more chances at guessing the number:
+คีย์เวิร์ด `loop` ใช้สร้างลูปไม่รู้จบ และเราจะเพิ่มมันเข้าไปเพื่อให้ผู้เล่นมีโอกาสเดาไปเรื่อยๆ:
 
 <span class="filename">Filename: src/main.rs</span>
 
@@ -573,18 +555,10 @@ more chances at guessing the number:
 }
 ```
 
-As you can see, we’ve moved everything into a loop from the guess input prompt
-onward. Be sure to indent the lines inside the loop another four spaces each
-and run the program again. Notice that there is a new problem because the
-program is doing exactly what we told it to do: ask for another guess forever!
-It doesn’t seem like the user can quit!
+อย่างที่เห็น เราได้ย้ายทุกอย่างเข้าไปในลูปเริ่มตั้งแต่คำชวนให้ผู้เล่นใส่ตัวเลขกันเลย อย่าลืมว่าแต่ละบรรทัดในลูปจะต้องเว้นย่อหน้าเข้าไปสี่วรรคด้วยนะ แล้วลองรันดูอีกที คราวนี้เราจะเจอปัญหาใหม่อีก เพราะว่าโปรแกรมทำงานตามที่เราสั่งเป๊ะๆคือ ถ้าไปเรื่อยๆ และดูเหมือนผู้เล่นจะไม่สามารถออกจากเกมได้!
 
-The user could always interrupt the program by using the keyboard shortcut <span
-class="keystroke">ctrl-c</span>. But there’s another way to escape this
-insatiable monster, as mentioned in the `parse` discussion in [“Comparing the
-Guess to the Secret Number”](#comparing-the-guess-to-the-secret-number)<!--
-ignore -->: if the user enters a non-number answer, the program will crash. The
-user can take advantage of that in order to quit, as shown here:
+ที่จริงผู้เล่นสามารถจะหยุดการทำงานของโปรแกรมได้ทุกเมื่อด้วยการใช้คีย์ลัด <span
+class="keystroke">ctrl-c</span> แต่ก็มีทางอื่นอีกที่จะใช้ออกจากเจ้าปีศาจตะกละตัวนี้ ถ้ายังจำได้ว่าเราเคยคุยกันเรื่อง `parse` ในตอน [“Comparing the Guess to the Secret Number”](#comparing-the-guess-to-the-secret-number)<!-- ignore -->: ถ้าผู้เล่นใส่อะไรเข้ามาที่มันไม่ใช่ตัวเลข โปรแกรมจะแคลช จำได้ไหม เราใช้ประโยชน์จากจุดนั้นเพื่อจะออกจากโปรแกรมได้ ลองดูตัวอย่าง:
 
 ```text
 $ cargo run
@@ -612,13 +586,11 @@ note: Run with `RUST_BACKTRACE=1` for a backtrace.
 error: Process didn't exit successfully: `target/debug/guess` (exit code: 101)
 ```
 
-Typing `quit` actually quits the game, but so will any other non-number input.
-However, this is suboptimal to say the least. We want the game to automatically
-stop when the correct number is guessed.
+พิมพ์ `quit` ใส่เข้ามามันจะออกจากเกมได้ แต่มันก็แค่การใส่อะไรที่ไม่ใช่ตัวเลขเข้าไปแค่นั้นนะ อย่างไรก็ตาม อย่างน้อยนี่ก็เป็นผลพลอยได้นะ ต่อไปเรายังอยากให้เกมจบทันทีที่ผู้เล่นเดาถูกด้วย
 
 ### Quitting After a Correct Guess
 
-Let’s program the game to quit when the user wins by adding a `break` statement:
+เรามาทำให้เกมจบเมื่อผู้เล่นชนะด้วยการเพิ่ม `break` เข้าไปกัน:
 
 <span class="filename">Filename: src/main.rs</span>
 
@@ -637,16 +609,11 @@ Let’s program the game to quit when the user wins by adding a `break` statemen
 }
 ```
 
-Adding the `break` line after `You win!` makes the program exit the loop when
-the user guesses the secret number correctly. Exiting the loop also means
-exiting the program, because the loop is the last part of `main`.
+เพิ่มบรรทัด `break` หลังจาก `You win!` เพื่อให้โปรแกรมจบลูปเมื่อผู้เล่นเดาตัวเลขได้ถูกต้อง และการออกจากลูปยังหมายถึงการออกจากโปรแกรมไปด้วยเลยในตัว เพราะว่าลูปเป็นขั้นตอนสุดท้ายใน `main` แล้วนั่นเอง
 
 ### Handling Invalid Input
 
-To further refine the game’s behavior, rather than crashing the program when
-the user inputs a non-number, let’s make the game ignore a non-number so the
-user can continue guessing. We can do that by altering the line where `guess`
-is converted from a `String` to a `u32`, as shown in Listing 2-5.
+เพื่อให้เกมปรับปรุงพฤติกรรมให้ดีขึ้น แทนที่จะให้มันแคลชเวลาที่ผู้เล่นใส่ของที่ไม่ใช่ตัวเลขเข้ามา เรามาทำให้มันเพิกเฉยของพวกนั้นกัน แล้วยอมให้ผู้เล่นเดาเลขต่อไปได้ โดยเราสามารถทำได้ด้วยการปรับปรุงบรรทันที่ `guess` แปลงค่าจาก `String` ไปเป็น `u32` ตามที่ได้แสดงให้เห็นใน Listing 2-5
 
 <span class="filename">Filename: src/main.rs</span>
 
@@ -666,32 +633,15 @@ println!("You guessed: {}", guess);
 // --snip--
 ```
 
-<span class="caption">Listing 2-5: Ignoring a non-number guess and asking for
-another guess instead of crashing the program</span>
+<span class="caption">Listing 2-5: เพิกเฉยต่อสิ่งที่ไม่ใช้ตัวเลข แล้วถามหาคำตอบต่อไปโดยไม่ทำให้โปรแกรมแคลช</span>
 
-Switching from an `expect` call to a `match` expression is how you generally
-move from crashing on an error to handling the error. Remember that `parse`
-returns a `Result` type and `Result` is an enum that has the variants `Ok` or
-`Err`. We’re using a `match` expression here, as we did with the `Ordering`
-result of the `cmp` method.
+การเปลี่ยนจากการใช้ `expect` ไปใช้ `match` เป็นท่าปกติที่จะแก้จากการที่เราปล่อยให้่โปรแกรมแคลชไปเฉยๆ ไปจัดการกับ error แทน ถ้ายังจำได้ `parse` จะคืน `Result` และ `Result` เป็น enum ที่มีค่าที่เป็นไปได้คือ `Ok` หรือ `Err` แบบเดียวกับที่เราทำตอน `Ordering` แล้วได้ผลลัพธ์จากเมธอด `cmp` นั่นเอง
 
-If `parse` is able to successfully turn the string into a number, it will
-return an `Ok` value that contains the resulting number. That `Ok` value will
-match the first arm’s pattern, and the `match` expression will just return the
-`num` value that `parse` produced and put inside the `Ok` value. That number
-will end up right where we want it in the new `guess` variable we’re creating.
+ถ้า `parse` สามารถทำงานได้สำเร็จโดยการแปลงค่าสตริงไปเป็นตัวเลขได้ มันจะคือค่า `Ok` ที่มีตัวเลขที่ได้มาให้ `Ok` จะตรงกับแขนแรกในรูปแบบของ match และมันก็แค่คืนค่า `num` ที่ถูกสร้างจาก `parse` มาใน `Ok` แล้วสุดท้ายตัวเลขนั้นก็จะจบด้วยการไปเป็นค่าในตัวแปร `guess` ที่เราสร้างรอไว้
 
-If `parse` is *not* able to turn the string into a number, it will return an
-`Err` value that contains more information about the error. The `Err` value
-does not match the `Ok(num)` pattern in the first `match` arm, but it does
-match the `Err(_)` pattern in the second arm. The underscore, `_`, is a
-catchall value; in this example, we’re saying we want to match all `Err`
-values, no matter what information they have inside them. So the program will
-execute the second arm’s code, `continue`, which tells the program to go to the
-next iteration of the `loop` and ask for another guess. So, effectively, the
-program ignores all errors that `parse` might encounter!
+กลับกันถ้า `parse` *ไม่* สามารถเปลี่ยนค่าจากสตริงไปเป็นตัวเลขได้ มันจะคืน `Err` ที่บรรจุรายละเอียดเกี่ยวกับ error ที่เกิดขึ้น และมันจะไม่ตรงกับรูปบบ `Ok(num)` ในแขนแรกของ `match` แต่จะไปตรงกับรูปแบบ `Err(_)` ในแขนที่สองแทน โดยที่ขีดล่าง `_` เป็นการบอกว่าทุกกรณี จากตัวอย่างนี้เราบอกเลยว่า ไม่ว่าจะเกิด error อะไรก็แล้วแต่โดยไม่สนว่าจะมีข้อมูลอะไรในนั้น เราจะให้โปรแกรมทำงานต่อไปด้วยการใช้ `continue` มันได้ผล เพราะโปรแกรมจะไม่สน error อะไรเลย
 
-Now everything in the program should work as expected. Let’s try it:
+ตอนนี้โปรแกรมเราน่าจะทำงานได้ดีหมดแล้ว ทดลองดู:
 
 ```text
 $ cargo run
@@ -715,10 +665,7 @@ You guessed: 61
 You win!
 ```
 
-Awesome! With one tiny final tweak, we will finish the guessing game. Recall
-that the program is still printing the secret number. That worked well for
-testing, but it ruins the game. Let’s delete the `println!` that outputs the
-secret number. Listing 2-6 shows the final code.
+เยี่ยมมาก! เหลืออีกนิดเดียว เราจะทำเกมเดาคำเสร็จแล้ว ยังจำได้ไหมว่าโปรแกรมเรายังพิมพ์ผลลัพธ์ออกมาโต้งๆอยู่เลย ซึ่งมันดีตอนที่เรากำลังทดสอบอยู่ แต่มันคงไม่สนุกตอนที่เล่นจริง เรามาลบ `println!` ทิ้งกัน และสุดท้ายจะได้โค้ดหน้าตาแบบนี้ตามที่แสดงให้เห็นใน Listing 2-6
 
 <span class="filename">Filename: src/main.rs</span>
 
@@ -763,16 +710,9 @@ fn main() {
 
 ## Summary
 
-At this point, you’ve successfully built the guessing game. Congratulations!
+มาถึงจุดนี้ เราก็ได้ทำเกมเดาคำสำเร็จเรียบร้อยแล้ว ขอแสดงความยินดีด้วย!
 
-This project was a hands-on way to introduce you to many new Rust concepts:
-`let`, `match`, methods, associated functions, the use of external crates, and
-more. In the next few chapters, you’ll learn about these concepts in more
-detail. Chapter 3 covers concepts that most programming languages have, such as
-variables, data types, and functions, and shows how to use them in Rust.
-Chapter 4 explores ownership, a feature that makes Rust different from other
-languages. Chapter 5 discusses structs and method syntax, and Chapter 6
-explains how enums work.
+ประสบการณ์ที่เราได้จากโปรเจ็คนี้ คือการแนะนำให้คุณได้รู้จักคอนเซ็ปหลายๆอย่างของ Rust: เช่น การใช้เมธอด `let` และ `match` และฟังก์ชั่นที่เกี่ยวข้องกับมัน การใช้ crate จากภายนอก และอีกหลายๆสิ่ง ในบทต่อๆไป คุณจะได้เรียนรู้เกี่ยวกับ หลักการพวกนี้ในรายละเอียดเพิ่มเติม โดยในบทที่ 3 จะครอบคลุมถึงหลักการส่วนใหญ่ของภาษาโปรแกรมมิ่ง เช่น ตัวแปร ชนิดของตัวแปร และฟังก์ชั่น พร้อมวิธีใช้ใน Rust ส่วนในบทที่ 4 จะพาไปเกี่ยวกับฟีเจอร์ ownership ว่ามันทำให้ Rust แตกต่างจากภาษาอื่นๆอย่างไร และในบทที่ 5 จะถกประเด็นเรื่อง struct และ method และสุดท้ายในบทที่ 6 จะอธิบายว่า enum ทำงานอย่างไร
 
 [variables-and-mutability]:
 ch03-01-variables-and-mutability.html#variables-and-mutability
