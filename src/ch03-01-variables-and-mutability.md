@@ -1,18 +1,10 @@
 ## Variables and Mutability
 
-As mentioned in Chapter 2, by default variables are immutable. This is one of
-many nudges Rust gives you to write your code in a way that takes advantage of
-the safety and easy concurrency that Rust offers. However, you still have the
-option to make your variables mutable. Let’s explore how and why Rust
-encourages you to favor immutability and why sometimes you might want to opt
-out.
+จากที่ได้กล่าวไปแล้วในบทที่ 2 ว่าโดยปกติตัวแปรจะเป็นแบบเปลี่ยนแปลงค่าไม่ได้ นี่เป็นหนึ่งในสิ่งที่ Rust พยายามทำให้คุณเขียนโค้ดให้ปลอดภัยและง่ายต่อการทำงานแบบคู่ขนานในแบบที่ Rust นำเสนอได้ง่ายขึ้น แต่คุณก็ยังสามารถใช้ตัวเลือกเพื่อทำให้ตัวแปร เปลี่ยนค่าได้อยู่ดี เรามาดูกันว่า Rust จะยั่วให้คุณชอบ ตัวแปรที่เปลี่ยนค่าไม่ได้นี้ อย่างไร และทำไมเราถึงต้องทำแบบนั้น และทำไมบางครั้งคุณถึงยังอยากมีทางเลือกอื่นอีก
 
-When a variable is immutable, once a value is bound to a name, you can’t change
-that value. To illustrate this, let’s generate a new project called *variables*
-in your *projects* directory by using `cargo new variables`.
+เมื่อตัวแปรไม่สามารถเปลี่ยนค่าได้ หมายความว่า เมื่อค่าใดก็ตามถูกนำไปใส่ในชื่อใดแล้ว คุณไม่สามารถเปลี่ยนค่านั้นได้อีก เพื่ออธิบายสิ่งนี้ เรามาสร้างโปรเจ็คใหม่กัน ให้ชื่อว่า *variables* เอาไว้ในไดเร็คทอรี่ *projects* ด้วยการสั่งว่า `cargo new variables`
 
-Then, in your new *variables* directory, open *src/main.rs* and replace its
-code with the following code that won’t compile just yet:
+จากนั้นในไดเร็คทอรี่ *variables* ให้เปิดไฟล์ *src/main.rs* แล้วเอาโค้ดนี้ไปทับโดยยังไม่ต้องคอมไพล์:
 
 <span class="filename">Filename: src/main.rs</span>
 
@@ -25,8 +17,7 @@ fn main() {
 }
 ```
 
-Save and run the program using `cargo run`. You should receive an error
-message, as shown in this output:
+จากนั้นบันทึกไฟล์แล้วรันโปรแกรมด้วยคำสั่ง `cargo run` คุณควรได้รับ error ตามที่เห็นนี้:
 
 ```text
 error[E0384]: cannot assign twice to immutable variable `x`
@@ -39,35 +30,17 @@ error[E0384]: cannot assign twice to immutable variable `x`
   |     ^^^^^ cannot assign twice to immutable variable
 ```
 
-This example shows how the compiler helps you find errors in your programs.
-Even though compiler errors can be frustrating, they only mean your program
-isn’t safely doing what you want it to do yet; they do *not* mean that you’re
-not a good programmer! Experienced Rustaceans still get compiler errors.
+ตัวอย่างนี้แสดงให้เห็นว่าตัวคอมไพเลอร์จะช่วยคุณหา error ในโปรแกรมคุณได้อย่างไร แต่ถึงแม้ว่าการที่คอมไพเลอร์แสดงข้อความ error จะดูน่าผิดหวัง แต่มันก็แค่หมายความว่าโปรแกรมของคุณมันยังไม่ปลอดภัยพอให้คุณทำงานได้เท่านั้น มัน *ไม่ได้* หมายความว่าคุณเป็นโปรแกรมเมอร์ที่ไม่เก่ง เพราะแม้แต่พวกผู้คลั่งไคล้ Rust ที่มีประสบการณ์สูงๆก็ยังได้รับ error ตอนคอมไพล์อยู่เสมอ
 
-The error message indicates that the cause of the error is that you `cannot
-assign twice to immutable variable x`, because you tried to assign a second
-value to the immutable `x` variable.
+ข้อความ error นี้แสดงให้คุณรู้ว่า คุณไม่สามารถใส่ให้ตัวแปร x สองครั้งได้ เพราะว่าคุณพยายามกำหนดค่าครั้งที่สองให้ตัวแปร `x` ซึ่งมันเป็นแบบเปลี่ยนแปลงค่าไม่ได้นั่นเอง
 
-It’s important that we get compile-time errors when we attempt to change a
-value that we previously designated as immutable because this very situation
-can lead to bugs. If one part of our code operates on the assumption that a
-value will never change and another part of our code changes that value, it’s
-possible that the first part of the code won’t do what it was designed to do.
-The cause of this kind of bug can be difficult to track down after the fact,
-especially when the second piece of code changes the value only *sometimes*.
+การได้รับ error ตอนคอมไพล์นี้มีส่วนสำคัญมาก เมื่อเราพยายามจะเปลี่ยนค่าที่เคยถูกกำหนดไปแล้วกับตัวแปรชนิดแก้ค่าไม่ได้ เพราะมันอาจทำให้เกิดบั๊กได้ง่ายๆเลย เพราะถ้าที่หนึ่งของโค้ดเราทำงานบนความเชื่อที่ว่าค่านี้จะไม่ถูกเปลี่ยนตลอดกาล และอีกส่วนของโค้ดพยายามจะไปแก้มัน ไอ้ส่วนแรกมันก็ไม่ได้คิดเผื่อไว้ด้วยว่าต้องทำยังไง ไอ้บั๊กประเภทนี้มันหายากมากๆ โดยเฉพาะเมื่อโค้ดสองส่วนนี้ จะเปลี่ยนค่านี้แค่ *บางโอกาส* อีกต่างหาก
 
-In Rust, the compiler guarantees that when you state that a value won’t change,
-it really won’t change. That means that when you’re reading and writing code,
-you don’t have to keep track of how and where a value might change. Your code
-is thus easier to reason through.
+ตัวคอมไพเลอร์ของ Rust รับประกันว่า เมื่อเราตั้งใจว่าค่าไหนจะไม่ถูกเปลี่ยน มันจะต้องไม่ถูกเปลี่ยนแน่นอน นั่นหมายความว่า เมื่อเวลาที่คุณกำลังอ่านและเขียนโค้ดอยู่ คุณไม่ต้องไปสนใจว่าค่านี้จะไปเปลี่ยนตอนไหน โค้ดคุณจะตรงไปตรงมา
 
-But mutability can be very useful. Variables are immutable only by default; as
-you did in Chapter 2, you can make them mutable by adding `mut` in front of the
-variable name. In addition to allowing this value to change, `mut` conveys
-intent to future readers of the code by indicating that other parts of the code
-will be changing this variable value.
+แต่ว่า ตัวแปรที่แก้ค่าได้ ก็มีประโยชน์ อย่างที่เห็นในบทที่ 2 แล้วว่าโดยปกติตัวแปรจะแก้ค่าไม่ได้ แต่เราก็ทำให้มันแก้ค่าได้ด้วยการเพิ่ม `mut` ไปข้างหน้าตัวแปร และมันยังหมายความถึงว่าผู้ที่อ่านโค้ดนี้จะรู้ว่าต้องมีส่วนใดส่วนหนึ่งของโค้ดจะมาเปลี่ยนค่านี้
 
-For example, let’s change *src/main.rs* to the following:
+เพื่อแสดงตัวอย่าง ลองเปลี่ยน *src/main.rs* ตามนี้:
 
 <span class="filename">Filename: src/main.rs</span>
 
@@ -80,7 +53,7 @@ fn main() {
 }
 ```
 
-When we run the program now, we get this:
+เมื่อเรารันโปรแกรม เราจะได้:
 
 ```text
 $ cargo run
@@ -91,27 +64,15 @@ The value of x is: 5
 The value of x is: 6
 ```
 
-We’re allowed to change the value that `x` binds to from `5` to `6` when `mut`
-is used. In some cases, you’ll want to make a variable mutable because it makes
-the code more convenient to write than if it had only immutable variables.
+เรายอมให้เปลี่ยนค่า `x` จาก `5` ไปเป็น `6` ได้ด้วยการใช้ `mut` ในบางกรณี คุณอาจจะต้องการให้ตัวแปร เปลี่ยนค่าได้ เพราะมันจะทำให้คุณเขียนโค้ดสะดวกขึ้นมากกว่าการใช้ตัวแปรที่เปลี่ยนค่าไม่ได้
 
-There are multiple trade-offs to consider in addition to the prevention of
-bugs. For example, in cases where you’re using large data structures, mutating
-an instance in place may be faster than copying and returning newly allocated
-instances. With smaller data structures, creating new instances and writing in
-a more functional programming style may be easier to think through, so lower
-performance might be a worthwhile penalty for gaining that clarity.
+มันมีหลายๆอย่างที่ต้องแลก ถ้าคุณต้องการป้องกันการเกิดบั๊ก ตัวอย่างเช่น ในกรณีที่คุณใช้ data structures ที่ใหญ่มากๆ การสร้างอินสแตนซ์ที่เปลี่ยนค่าได้ จะทำให้มันทำงานเร็วกว่าที่จะมาสำเนาของไปสร้างใหม่อยู่เรื่อยๆ ในขณะที่ถ้ามันเป็น data structures ที่เล็ก การสร้างอินสแตนซ์ใหม่และเขียนแบบ functional style อาจจะทำให้เราคิดได้ง่ายขึ้น นั่นหมายความว่า ขึ้นอยู่กับว่า คุณจะยอมให้ประสิทธิภาพตกลงเพื่อแลกกับความชัดเจนที่เพิ่มขึ้นหรือไม่
 
 ### Differences Between Variables and Constants
 
-Being unable to change the value of a variable might have reminded you of
-another programming concept that most other languages have: *constants*. Like
-immutable variables, constants are values that are bound to a name and are not
-allowed to change, but there are a few differences between constants and
-variables.
+การที่เราพูดกันถึงตัวแปรที่ไม่สามารถเปลี่ยนค่าได้ อาจจะทำให้คุณไปนึกถึงหลักการของภาษาโปรแกรมมิ่งอื่นส่วนใหญ่ที่จะมี *constants* ซึ่งมันคล้ายกับตัวแปรที่แก้ค่าไม่ได้เลย เพราะ constant เป็นค่าที่ใส่เข้าไปในชื่อไหนแล้วก็เปลี่ยนค่าไม่ได้อีกต่อไป แต่มันก็มีความแตกต่างกันเล็กน้อยระหว่าง constants กับตัวแปร
 
-First, you aren’t allowed to use `mut` with constants. Constants aren’t just
-immutable by default—they’re always immutable.
+อย่างแรก คุณไม่สามารถใช้ `mut` กับ constants ได้ เพระา constants ไม่ใช่แค่เปลี่ยนค่าไม่ได้โดยปกติ แต่มันเปลี่ยนค่าไม่ได้เลยด้วยซ้ำ
 
 You declare constants using the `const` keyword instead of the `let` keyword,
 and the type of the value *must* be annotated. We’re about to cover types and
