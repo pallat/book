@@ -74,49 +74,26 @@ The value of x is: 6
 
 อย่างแรก คุณไม่สามารถใช้ `mut` กับ constants ได้ เพระา constants ไม่ใช่แค่เปลี่ยนค่าไม่ได้โดยปกติ แต่มันเปลี่ยนค่าไม่ได้เลยด้วยซ้ำ
 
-You declare constants using the `const` keyword instead of the `let` keyword,
-and the type of the value *must* be annotated. We’re about to cover types and
-type annotations in the next section, [“Data Types,”][data-types]<!-- ignore
---> so don’t worry about the details right now. Just know that you must always
-annotate the type.
+คุณประกาศ constants ได้ด้วยการใช้คำ `const` แทนคำว่า `let` และ *ต้อง* ระบุ type ด้วย แล้วเราจะไปรู้เรื่อง type กับการประกาศ type กันในบทหน้า [“Data Types,”][data-types]<!-- ignore --> เฉพาะฉะนั้น อย่าเพิ่งกังวลเกี่ยวกับมันในตอนนี้ แค่รู้ไว้ว่าเราต้องประกาศ type ให้มันเสมอแค่นั้นพอ
 
-Constants can be declared in any scope, including the global scope, which makes
-them useful for values that many parts of code need to know about.
+เราสามารถประกาศ constants ไว้ที่สโคปไหนก็ได้ รวมทั้งที่ global ซึ่งเหมาะสำหรับค่าที่คุณต้องการให้รับรู้ทั่วทั้งโปรแกรม
 
-The last difference is that constants may be set only to a constant expression,
-not the result of a function call or any other value that could only be
-computed at runtime.
+สุดท้าย สิ่งที่ต่างกันก็คือ การกำหนดค่าให้มันจะต้องทำตอนที่ประกาศเท่านั้น ไม่สามารถใช้ค่าที่ได้คืนมาจากฟังก์ชั่นหรือ ค่าใดๆที่เกินตอน runtime ได้เลย
 
-Here’s an example of a constant declaration where the constant’s name is
-`MAX_POINTS` and its value is set to 100,000. (Rust’s naming convention for
-constants is to use all uppercase with underscores between words, and
-underscores can be inserted in numeric literals to improve readability):
+นี่คือตัวอน่างการประกาศ constant ชื่อ `MAX_POINTS` พร้อมกำหนดค่าให้มันเท่ากับ 100,000 (การประกาศชื่อ constant ในภาษา Rust โดยส่วนมากจะใช้ตัวอักษรตัวใหญ่ร่วมกับขีดล่างเป็นตัวคั่นระหว่างคำ และขีดล่างนี้ยังใช้กับตัวเลข แทนการใช้ลูกน้ำเพื่อช่วยให้อ่านง่ายขึ้นอีกด้วย)
 
 ```rust
 const MAX_POINTS: u32 = 100_000;
 ```
 
-Constants are valid for the entire time a program runs, within the scope they
-were declared in, making them a useful choice for values in your application
-domain that multiple parts of the program might need to know about, such as the
-maximum number of points any player of a game is allowed to earn or the speed
-of light.
+constant จะคงอยู่ตลอดเวลาที่โปรแกรมทำงาน ในสโคปที่มันถูกประกาศไว้ ซึ่งมันมีประโยชน์มากในกรณีที่คุณต้องการให้ส่วนต่างๆของโปรแกรมรู้จักค่า ค่าหนึ่ง เช่น ค่าแต้มสูงสุดที่ยอมให้ผู้เล่นเกมทำได้ หรือค่าความเร็วแสง
 
-Naming hardcoded values used throughout your program as constants is useful in
-conveying the meaning of that value to future maintainers of the code. It also
-helps to have only one place in your code you would need to change if the
-hardcoded value needed to be updated in the future.
+การใช้ constant กำหนดค่าใดๆลงไปเป็น hardcoded นี้มีประโยชน์ในแง่การดูแลโค้ดในอนาคต และมันยังช่วยให้คุณแก้โค้ดที่เดียวในกรณีที่ถ้ามันจะต้องถูกแก้ไขในอนาคต
 
 ### Shadowing
 
-As you saw in the guessing game tutorial in the [“Comparing the Guess to the
-Secret Number”][comparing-the-guess-to-the-secret-number]<!-- ignore -->
-section in Chapter 2, you can declare a new variable with the same name as a
-previous variable, and the new variable shadows the previous variable.
-Rustaceans say that the first variable is *shadowed* by the second, which means
-that the second variable’s value is what appears when the variable is used. We
-can shadow a variable by using the same variable’s name and repeating the use
-of the `let` keyword as follows:
+ถ้ายังจำได้ในตอนที่เราทำเกมเดาเลขกันในส่วน [“Comparing the Guess to the
+Secret Number”][comparing-the-guess-to-the-secret-number]<!-- ignore --> ในบทที่ 2 คุณสามารถประกาศตัวแปรใหม่โดยใช้ชื่อซ้ำกับตัวแปรก่อนหน้าได้ และตัวแปรตัวใหม่จะเป็นเงาของตัวแปรก่อนหน้านั้น พวกผู้คลั่งไคล้ Rust กล่าวกันว่า เจ้าตัวแปรตัวแรกได้กลายเป็น *เงา* ของตัวแปรที่สอง หมายความว่าเราจะได้ค่าจากตัวแปรที่สองเมื่อตอนที่ใช้งานจริง โดยเราสามารถที่จะทำเงาของตัวแปรได้ด้วยการใช้ 'let` ประกาศชื่อเดิมซ้ำๆแบบนี้:
 
 <span class="filename">Filename: src/main.rs</span>
 
@@ -132,11 +109,7 @@ fn main() {
 }
 ```
 
-This program first binds `x` to a value of `5`. Then it shadows `x` by
-repeating `let x =`, taking the original value and adding `1` so the value of
-`x` is then `6`. The third `let` statement also shadows `x`, multiplying the
-previous value by `2` to give `x` a final value of `12`. When we run this
-program, it will output the following:
+โปรแกรมนี้ประกาส `x` ตัวแรกด้วยการกำหนดค่าเป็น `5` จากนั้นมันกลายเป็นเงาจากการประกาศชื่อเดิมซ้ำ `let x =` ด้วยการเอาค่าเดิมมาบวกเพิ่มไปอีก `1`  แสดงว่าตอนนี้ค่านี้ก็คือ `6` และครั้งที่สาม เราใช้ `let` ทำให้ `x` กลายเป็นเงาอีกรอบด้วยการเอาค่าก่อนหน้านี้มาคูณ `2` แล้วเอาค่ากลับไปใส่ `x` ค่าสุดท้ายก็จะกลายเป็น `12` และเมื่อเรารันโปรแกรมมันจะแสดงผลตามนี้
 
 ```text
 $ cargo run
@@ -146,29 +119,16 @@ $ cargo run
 The value of x is: 12
 ```
 
-Shadowing is different from marking a variable as `mut`, because we’ll get a
-compile-time error if we accidentally try to reassign to this variable without
-using the `let` keyword. By using `let`, we can perform a few transformations
-on a value but have the variable be immutable after those transformations have
-been completed.
+การสร้างเงานี้แตกต่างจากการใช้ `mut` เพราะเราจะได้ error ตอนที่คอมไพล์ทันทีถ้าเกิดปัญหาว่าเราพยายามจะยัดค่าให้มันโดยไม่ใช้ `let` ซึ่งการใช้ `let` จะทำให้เรามีโอกาสปรับเปลี่ยนค่ามันได้ก่อนเล็กน้อย แต่ก็จะได้ตัวแปรที่แก้ไขค่าไม่ได้กลับมาในตอนจบ
 
-The other difference between `mut` and shadowing is that because we’re
-effectively creating a new variable when we use the `let` keyword again, we can
-change the type of the value but reuse the same name. For example, say our
-program asks a user to show how many spaces they want between some text by
-inputting space characters, but we really want to store that input as a number:
+ความแตกต่างในแง่อื่นระหว่างการใช้ `mut` กับการสร้างเงา ก็คือมันให้ประสิทธิผลดีกว่า เพราะว่าเราใช้ `let` เพื่อประกาศตัวแปรใหม่ มันทำให้เราสามารถเปลี่ยน type มันได้ในขณะที่ใช้ชื่อเดิม ตัวอย่างเช่น โปรแกรมของเราต้องการถามผู้ใช้ว่าต้องการเว้นวรรคกี่ตัวอักษรระหว่างประโยค ด้วยการรับตัวอักษรเว้นวรรคเข้ามา แต่ความจริงเราต้องการเก็บมันเป็นตัวเลข:
 
 ```rust
 let spaces = "   ";
 let spaces = spaces.len();
 ```
 
-This construct is allowed because the first `spaces` variable is a string type
-and the second `spaces` variable, which is a brand-new variable that happens to
-have the same name as the first one, is a number type. Shadowing thus spares us
-from having to come up with different names, such as `spaces_str` and
-`spaces_num`; instead, we can reuse the simpler `spaces` name. However, if we
-try to use `mut` for this, as shown here, we’ll get a compile-time error:
+เราสามารถทำแบบนี้ได้ โดยประกาศตัวแปร `spaces` ตัวแรกเป็นสตริง และตัวแปร `spaces` ที่ประกาศครั้งที่สอง ใช้ชื่อเดิมเหมือนตัวแปรตัวแรก แต่มันเป็นตัวเลข ซึ่งการสร้างเงานี้จะช่วยให้เราไม่ต้องสร้างตัวแปรที่ชื่อต่างกันเช่น `spaces_str` กับ `spaces_num` แทนที่จะทำแบบนั้น เราก็ใช้ชื่อเดียวกันไปเลยคือ `spaces` แต่อย่างไรก็ดี ถ้าเราพยายามใช้ `mut` แทนในกรณีที่ต้องการสร้างเงา เราจะได้ error ตอนที่คอมไพล์แทนแบบนี้:
 
 ```rust,ignore,does_not_compile
 let mut spaces = "   ";
