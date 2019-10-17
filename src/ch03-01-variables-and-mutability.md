@@ -135,7 +135,7 @@ let mut spaces = "   ";
 spaces = spaces.len();
 ```
 
-The error says we’re not allowed to mutate a variable’s type:
+error นี้บอกว่าเราไม่ได้รับอนุญาตให้เปลี่ยน type ตัวแปรได้:
 
 ```text
 error[E0308]: mismatched types
@@ -148,8 +148,7 @@ error[E0308]: mismatched types
              found type `usize`
 ```
 
-Now that we’ve explored how variables work, let’s look at more data types they
-can have.
+ถึงตอนนี้เราก็ได้รู้แล้วว่าตัวแปรมันทำงานยังไง ต่อไปเราไปดูกันต่อในรายละเอียดว่ามี type อะไรให้ใช้บ้าง
 
 [comparing-the-guess-to-the-secret-number]:
 ch02-00-guessing-game-tutorial.html#comparing-the-guess-to-the-secret-number
