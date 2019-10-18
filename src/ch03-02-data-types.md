@@ -1,24 +1,15 @@
 ## Data Types
 
-Every value in Rust is of a certain *data type*, which tells Rust what kind of
-data is being specified so it knows how to work with that data. We’ll look at
-two data type subsets: scalar and compound.
+ทุกๆค่าใน Rust เป็นส่วนหนึ่งของ *data type* เพื่อบอกให้ Rust รู้ว่าข้อมูลเป็นประเภทใด มันจะได้รู้ว่าจะทำงานยังไงกับข้อมูลนั้น และเราจะมาพิจารณากันถึงตัวแปรสองชนิดคือแบบ scalar และแบบ compound
 
-Keep in mind that Rust is a *statically typed* language, which means that it
-must know the types of all variables at compile time. The compiler can usually
-infer what type we want to use based on the value and how we use it. In cases
-when many types are possible, such as when we converted a `String` to a numeric
-type using `parse` in the [“Comparing the Guess to the Secret
-Number”][comparing-the-guess-to-the-secret-number]<!-- ignore --> section in
-Chapter 2, we must add a type annotation, like this:
+พึงระลึกไว้เสมอว่า Rust เป็นภาษาแบบ *statically typed* แปลว่ามันจะต้องรู้ type ของทุกๆตัวแปรเสมอตอนคอมไพล์ และเพราะว่าคอมไพเลอร์มันมีความสามารถเดา type ได้จากค่าที่เราใช้ ในกรณีที่มีความเป็นไปได้หลาย type เช่นเมื่อเราแปลงค่าจาก `String` ไปเป็นตัวเลขด้วยการใช้ `parse` ในเรื่อง [“Comparing the Guess to the Secret
+Number”][comparing-the-guess-to-the-secret-number]<!-- ignore --> ในบทที่ 2 เราจำเป็นจะต้องอธิบาย type ให้มันด้วยแบบนี้:
 
 ```rust
 let guess: u32 = "42".parse().expect("Not a number!");
 ```
 
-If we don’t add the type annotation here, Rust will display the following
-error, which means the compiler needs more information from us to know which
-type we want to use:
+ถ้าเราไม่ใส่ type ให้มันตรงนี้ Rust จะแสดง error แบบนี้ เพื่อบอกให้รู้ว่าคอมไพเลอร์ต้องการข้อมูลเพิ่มเติมจากเราว่า type อะไรกันแน่ที่เราต้องการ:
 
 ```text
 error[E0282]: type annotations needed
@@ -31,23 +22,15 @@ error[E0282]: type annotations needed
   |         consider giving `guess` a type
 ```
 
-You’ll see different type annotations for other data types.
+เราจะเห็นวิธีอธิบาย type เมื่อเจอ type อื่นๆที่ต่างกัน
 
 ### Scalar Types
 
-A *scalar* type represents a single value. Rust has four primary scalar types:
-integers, floating-point numbers, Booleans, and characters. You may recognize
-these from other programming languages. Let’s jump into how they work in Rust.
+type แบบ *scalar* เป็นตัวแทนของค่าเดี่ยวๆ ซึ่ง Rust มีอยู่ด้วยกัน สี่ scalar type ได้แก่ integers, floating-point, Booleans และ characters เหมือนๆกับในภาษาโปรแกรมมิ่งอื่นๆ เราไปดูกันเลยดีว่ามันทำงานยังไงใน Rust
 
 #### Integer Types
 
-An *integer* is a number without a fractional component. We used one integer
-type in Chapter 2, the `u32` type. This type declaration indicates that the
-value it’s associated with should be an unsigned integer (signed integer types
-start with `i`, instead of `u`) that takes up 32 bits of space. Table 3-1 shows
-the built-in integer types in Rust. Each variant in the Signed and Unsigned
-columns (for example, `i16`) can be used to declare the type of an integer
-value.
+*integer* เป็นตัวเลขจำนวนเต็ม เราเคยได้ใช้มันครั้งหนึ่งในบทที่ 2 ก็คือ `u32` type นี้แสดงว่าค่าที่จะมาเก็บได้ควรเป็นค่าตัวเลขจำนวนเต็มที่ไม่มีประจุ (ตัวเลขที่มีประจุจะเริ่มต้นด้วยตัว `i` แทนตัว `u`) ที่มีขนาด 32 bits ดังที่แสดงในตาราง 3-1 ว่ามี integer อะไรให้ใช้บ้างใน Rust และแต่ละตัวไม่ว่าจะเป็นแบบมีหรือไม่มีประจุ (ตัวอย่างเช่น `i16`) สามารถประกาศใช้เป็น type ให้ตัวเลขจำนวนเต็มได้ทั้งนั้น
 
 <span class="caption">Table 3-1: Integer Types in Rust</span>
 
